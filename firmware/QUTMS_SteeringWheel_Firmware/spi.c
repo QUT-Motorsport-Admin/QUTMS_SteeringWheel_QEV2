@@ -10,6 +10,7 @@
 #include <inttypes.h>
 #include <avr/io.h>
 #include "spi.h"
+#include "OLED.h"
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 //  SPI Functions

@@ -3,7 +3,7 @@
 * @author  Zoe Goodward
 * @version V1.0.0
 * @date    2/08/2019 1:12:41 PM
-* @brief   Functions for creating graphics on the OLED display
+* @brief   Main entry point of program
 *****************************************************************************/
 
 #define F_CPU 16000000UL /* CPU clock in Hertz */
@@ -12,6 +12,11 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
+
+#include "spi.h"
+#include "OLED.h"
+#include "images.h"
+#include "input.h"
 
 int main(void)
 {
