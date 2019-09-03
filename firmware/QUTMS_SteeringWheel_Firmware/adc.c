@@ -7,6 +7,10 @@
 *****************************************************************************/
 
 /* INCLUDES */
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
+#include <avr/pgmspace.h>
 #include "adc.h"
 
 /*============================================================================
@@ -23,12 +27,12 @@ void adc_init() {
     ADCSRA = 0; // Clear 
     // Right adjust result
     ADMUX &= ~(1<<ADLAR); // Clear
-    ADMUX |= (1 << REFS0)|(1 << AREFEN);
+    ADMUX |= (1 << REFS0);
     ADCSRA |= (1 << ADEN)|(1 << ADPS2)|(1 << ADPS1)|(1 << ADPS0);
 }
 
-void adc_set_prescalar(unin8_t prescalar) {
-    ADCSRA &= ADC_PRESCALAR_MASK;
+void adc_set_prescalar(uint8_t prescalar) {
+    //ADCSRA &= ADC_PRESCALAR_MASK;
     ADCSRA |= prescalar;
 }
 
@@ -43,8 +47,8 @@ Notes   :
 ============================================================================*/
 uint16_t adc_read(uint8_t adc_channel) {
     uint16_t result = 0;
-    adc_channel = (ADMUX & 0b11100000)|(channel & 0b00011111);
-    ADMUX = channel;
+    adc_channel = (ADMUX & 0b11100000)|(adc_channel & 0b00011111);
+    ADMUX = adc_channel;
     ADCSRA |= (1 << ADSC);
     while(!(ADCSRA & (1 << ADIF)));
     result = ADCL;

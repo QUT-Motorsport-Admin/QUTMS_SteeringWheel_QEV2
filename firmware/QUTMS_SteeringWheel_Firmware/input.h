@@ -42,6 +42,9 @@
 #define BTN_B		PINA6
 #define BTN_C		PINA7
 
+#define POT_A		PINA0
+#define POT_B		PINA1
+
 #define LED_A_ON	PORTD |= 0b01000000
 #define LED_A_OFF	PORTD &= ~0b01000000
 #define LED_B_ON	PORTD |= 0b10000000

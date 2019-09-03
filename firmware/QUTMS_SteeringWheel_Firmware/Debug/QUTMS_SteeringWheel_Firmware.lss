@@ -1,0 +1,1291 @@
+
+QUTMS_SteeringWheel_Firmware.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  00000df4  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000d80  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000002  00800100  00800100  00000df4  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  00000df4  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000e24  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000198  00000000  00000000  00000e64  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   00001b33  00000000  00000000  00000ffc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 00000bf3  00000000  00000000  00002b2f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   00000c0c  00000000  00000000  00003722  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  000003b4  00000000  00000000  00004330  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    00000758  00000000  00000000  000046e4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    00001371  00000000  00000000  00004e3c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000158  00000000  00000000  000061ad  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	45 c4       	rjmp	.+2186   	; 0x88c <__ctors_end>
+   2:	00 00       	nop
+   4:	53 c4       	rjmp	.+2214   	; 0x8ac <__bad_interrupt>
+   6:	00 00       	nop
+   8:	51 c4       	rjmp	.+2210   	; 0x8ac <__bad_interrupt>
+   a:	00 00       	nop
+   c:	4f c4       	rjmp	.+2206   	; 0x8ac <__bad_interrupt>
+   e:	00 00       	nop
+  10:	4d c4       	rjmp	.+2202   	; 0x8ac <__bad_interrupt>
+  12:	00 00       	nop
+  14:	4b c4       	rjmp	.+2198   	; 0x8ac <__bad_interrupt>
+  16:	00 00       	nop
+  18:	49 c4       	rjmp	.+2194   	; 0x8ac <__bad_interrupt>
+  1a:	00 00       	nop
+  1c:	47 c4       	rjmp	.+2190   	; 0x8ac <__bad_interrupt>
+  1e:	00 00       	nop
+  20:	45 c4       	rjmp	.+2186   	; 0x8ac <__bad_interrupt>
+  22:	00 00       	nop
+  24:	43 c4       	rjmp	.+2182   	; 0x8ac <__bad_interrupt>
+  26:	00 00       	nop
+  28:	41 c4       	rjmp	.+2178   	; 0x8ac <__bad_interrupt>
+  2a:	00 00       	nop
+  2c:	3f c4       	rjmp	.+2174   	; 0x8ac <__bad_interrupt>
+  2e:	00 00       	nop
+  30:	3d c4       	rjmp	.+2170   	; 0x8ac <__bad_interrupt>
+  32:	00 00       	nop
+  34:	3b c4       	rjmp	.+2166   	; 0x8ac <__bad_interrupt>
+  36:	00 00       	nop
+  38:	39 c4       	rjmp	.+2162   	; 0x8ac <__bad_interrupt>
+  3a:	00 00       	nop
+  3c:	37 c4       	rjmp	.+2158   	; 0x8ac <__bad_interrupt>
+  3e:	00 00       	nop
+  40:	35 c4       	rjmp	.+2154   	; 0x8ac <__bad_interrupt>
+  42:	00 00       	nop
+  44:	33 c4       	rjmp	.+2150   	; 0x8ac <__bad_interrupt>
+  46:	00 00       	nop
+  48:	31 c4       	rjmp	.+2146   	; 0x8ac <__bad_interrupt>
+  4a:	00 00       	nop
+  4c:	2f c4       	rjmp	.+2142   	; 0x8ac <__bad_interrupt>
+  4e:	00 00       	nop
+  50:	2d c4       	rjmp	.+2138   	; 0x8ac <__bad_interrupt>
+  52:	00 00       	nop
+  54:	2b c4       	rjmp	.+2134   	; 0x8ac <__bad_interrupt>
+  56:	00 00       	nop
+  58:	29 c4       	rjmp	.+2130   	; 0x8ac <__bad_interrupt>
+  5a:	00 00       	nop
+  5c:	27 c4       	rjmp	.+2126   	; 0x8ac <__bad_interrupt>
+  5e:	00 00       	nop
+  60:	25 c4       	rjmp	.+2122   	; 0x8ac <__bad_interrupt>
+  62:	00 00       	nop
+  64:	23 c4       	rjmp	.+2118   	; 0x8ac <__bad_interrupt>
+  66:	00 00       	nop
+  68:	21 c4       	rjmp	.+2114   	; 0x8ac <__bad_interrupt>
+  6a:	00 00       	nop
+  6c:	1f c4       	rjmp	.+2110   	; 0x8ac <__bad_interrupt>
+  6e:	00 00       	nop
+  70:	1d c4       	rjmp	.+2106   	; 0x8ac <__bad_interrupt>
+  72:	00 00       	nop
+  74:	1b c4       	rjmp	.+2102   	; 0x8ac <__bad_interrupt>
+  76:	00 00       	nop
+  78:	19 c4       	rjmp	.+2098   	; 0x8ac <__bad_interrupt>
+  7a:	00 00       	nop
+  7c:	17 c4       	rjmp	.+2094   	; 0x8ac <__bad_interrupt>
+  7e:	00 00       	nop
+  80:	15 c4       	rjmp	.+2090   	; 0x8ac <__bad_interrupt>
+  82:	00 00       	nop
+  84:	13 c4       	rjmp	.+2086   	; 0x8ac <__bad_interrupt>
+  86:	00 00       	nop
+  88:	11 c4       	rjmp	.+2082   	; 0x8ac <__bad_interrupt>
+	...
+
+0000008c <MOTORSPORT>:
+	...
+ 1d4:	00 00 03 f8 00 00 00 00 00 00 00 00 00 00 00 00     ................
+	...
+ 1f4:	00 00 1f fe 00 fc 03 f7 ff ff 3f c0 1f e0 1f f0     ..........?.....
+	...
+ 214:	00 00 7f ff 80 fc 07 e7 ff fe 3f c0 3f e0 1f e0     ..........?.?...
+	...
+ 234:	00 00 ff ff c1 f8 07 e7 ff fe 3f c0 3f c0 1f e0     ..........?.?...
+	...
+ 254:	00 01 ff ff c1 f8 07 ef ff fe 7f 80 3f c0 3f e0     ............?.?.
+	...
+ 274:	00 07 ff ff e1 f8 0f cf ff fc 7f 80 3f c0 3f c0     ............?.?.
+	...
+ 294:	00 07 fc 7f e3 f0 0f c0 3f 00 7f 80 7f 80 3f c0     ........?.....?.
+	...
+ 2b4:	00 0f f0 1f e3 f0 0f c0 3f 00 ff 00 7f 80 7f c0     ........?.......
+	...
+ 2d4:	00 1f c0 0f e3 f0 1f 80 7e 00 ff 00 7f 80 7f 80     ........~.......
+	...
+ 2f4:	00 3f 80 0f e7 e0 1f 80 7e 00 00 ff 00 7f 80 00     .?......~.......
+	...
+ 314:	00 3f 80 0f e7 e0 1f 80 7e 00 00 ff 00 ff 00 00     .?......~.......
+	...
+ 334:	00 7f 00 0f e7 e0 3f 00 fc 00 01 ff 00 ff 00 00     ......?.........
+	...
+ 354:	00 7f 00 0f cf c0 3f 00 fc 00 01 fe 00 ff 00 00     ......?.........
+	...
+ 374:	00 7e 00 0f cf c0 3f 00 fc 00 01 fe 01 fe 00 00     .~....?.........
+	...
+ 394:	00 7e 01 ff cf c0 7e 01 f8 00 03 fe 01 fe 00 00     .~....~.........
+	...
+ 3b4:	00 fe 03 ff 9f 80 7e 01 f8 00 03 fc 01 fe 00 00     ......~.........
+	...
+ 3d4:	00 fe 03 ff 9f 80 7e 01 f8 00 03 fc 03 fc 00 00     ......~.........
+	...
+ 3f4:	00 fe 01 ff 1f 80 fc 03 f0 07 f8 03 fc 03 fc 00     ................
+	...
+ 414:	00 ff 01 ff 1f 80 fc 03 f0 07 f8 07 fc 03 fc 00     ................
+	...
+ 434:	00 ff 83 fe 3f 81 f8 03 f0 0f f8 07 f8 03 fc 00     ....?...........
+	...
+ 454:	00 7f ff fc 3f ff f8 07 f0 0f f0 07 f8 07 f8 00     ....?...........
+	...
+ 474:	00 7f ff fc 1f ff f0 07 e0 0f f0 0f f8 07 f8 00     ................
+	...
+ 494:	00 3f ff fc 1f ff e0 07 e0 1f f0 0f f0 07 f8 00     .?..............
+	...
+ 4b4:	00 3f ff fe 0f ff c0 0f e0 1f e0 0f f0 0f f8 00     .?..............
+	...
+ 4d4:	00 0f ff fe 07 ff 00 0f c0 1f e0 1f f0 0f f0 00     ................
+	...
+ 4f4:	00 03 f8 7e 01 f8 00 0f c0 1f c0 1f e0 0f f0 00     ...~............
+	...
+ 554:	07 ff ff ff ff ff ff ff ff ff ff ff ff ff e0 00     ................
+	...
+ 574:	0f ff ff ff ff ff ff ff ff ff ff ff ff ff e0 00     ................
+	...
+ 594:	0f ff ff ff ff ff ff ff ff ff ff ff ff ff c0 00     ................
+	...
+ 5b4:	0e fd f0 3c 07 81 f0 3e 0f 81 f0 3e 07 81 c0 00     ...<...>...>....
+	...
+ 5d4:	1c 79 e0 1c 07 01 e0 3c 07 01 e0 3c 07 01 c0 00     .y.....<...<....
+	...
+ 5f4:	1c 61 c7 1f 3e 38 e7 38 cf 39 c7 1c 67 cf 80 00     .a..>8.8.9..g...
+	...
+ 614:	1c 03 cf 1e 3c 79 e7 38 3f 31 8f 1c e7 cf 80 00     ....<y.8?1......
+	...
+ 634:	38 03 8f 1e 7c f9 c0 7c 1e 03 9f 38 0f 8f 80 00     8...|..|...8....
+	...
+ 654:	39 03 8f 3e 7c f1 c0 ff 8e 07 9e 38 1f 9f 00 00     9..>|......8....
+	...
+ 674:	39 e7 8c 3c 7c 63 cc f3 9c 1f 8c 79 9f 9f 00 00     9..<|c.....y....
+	...
+ 694:	71 e7 80 7c fc 07 8c f0 1c 7f 80 f1 9f 1f 00 00     q..|............
+	...
+ 6b4:	73 c7 c1 fc fe 0f 9c 78 3c ff c1 f3 8f 3e 00 00     s......x<....>..
+	...
+ 6d4:	7f ff ff ff ff ff ff ff ff ff ff ff ff fe 00 00     ................
+	...
+ 6f4:	ff ff ff ff ff ff ff ff ff ff ff ff ff fe 00 00     ................
+	...
+
+0000088c <__ctors_end>:
+ 88c:	11 24       	eor	r1, r1
+ 88e:	1f be       	out	0x3f, r1	; 63
+ 890:	cf ef       	ldi	r28, 0xFF	; 255
+ 892:	d0 e4       	ldi	r29, 0x40	; 64
+ 894:	de bf       	out	0x3e, r29	; 62
+ 896:	cd bf       	out	0x3d, r28	; 61
+
+00000898 <__do_clear_bss>:
+ 898:	21 e0       	ldi	r18, 0x01	; 1
+ 89a:	a0 e0       	ldi	r26, 0x00	; 0
+ 89c:	b1 e0       	ldi	r27, 0x01	; 1
+ 89e:	01 c0       	rjmp	.+2      	; 0x8a2 <.do_clear_bss_start>
+
+000008a0 <.do_clear_bss_loop>:
+ 8a0:	1d 92       	st	X+, r1
+
+000008a2 <.do_clear_bss_start>:
+ 8a2:	a2 30       	cpi	r26, 0x02	; 2
+ 8a4:	b2 07       	cpc	r27, r18
+ 8a6:	e1 f7       	brne	.-8      	; 0x8a0 <.do_clear_bss_loop>
+ 8a8:	0e d1       	rcall	.+540    	; 0xac6 <main>
+ 8aa:	68 c2       	rjmp	.+1232   	; 0xd7c <_exit>
+
+000008ac <__bad_interrupt>:
+ 8ac:	a9 cb       	rjmp	.-2222   	; 0x0 <__vectors>
+
+000008ae <adc_init>:
+    ADCSRA |= (1 << ADEN)|(1 << ADPS2)|(1 << ADPS1)|(1 << ADPS0);
+}
+
+void adc_set_prescalar(uint8_t prescalar) {
+    //ADCSRA &= ADC_PRESCALAR_MASK;
+    ADCSRA |= prescalar;
+ 8ae:	aa e7       	ldi	r26, 0x7A	; 122
+ 8b0:	b0 e0       	ldi	r27, 0x00	; 0
+ 8b2:	1c 92       	st	X, r1
+ 8b4:	ec e7       	ldi	r30, 0x7C	; 124
+ 8b6:	f0 e0       	ldi	r31, 0x00	; 0
+ 8b8:	80 81       	ld	r24, Z
+ 8ba:	8f 7d       	andi	r24, 0xDF	; 223
+ 8bc:	80 83       	st	Z, r24
+ 8be:	80 81       	ld	r24, Z
+ 8c0:	80 64       	ori	r24, 0x40	; 64
+ 8c2:	80 83       	st	Z, r24
+ 8c4:	8c 91       	ld	r24, X
+ 8c6:	87 68       	ori	r24, 0x87	; 135
+ 8c8:	8c 93       	st	X, r24
+ 8ca:	08 95       	ret
+
+000008cc <adc_read>:
+Returns :   result - pass the 10 bit ADC number to requesting function
+Notes   :
+============================================================================*/
+uint16_t adc_read(uint8_t adc_channel) {
+    uint16_t result = 0;
+    adc_channel = (ADMUX & 0b11100000)|(adc_channel & 0b00011111);
+ 8cc:	ec e7       	ldi	r30, 0x7C	; 124
+ 8ce:	f0 e0       	ldi	r31, 0x00	; 0
+ 8d0:	90 81       	ld	r25, Z
+ 8d2:	90 7e       	andi	r25, 0xE0	; 224
+ 8d4:	8f 71       	andi	r24, 0x1F	; 31
+ 8d6:	89 2b       	or	r24, r25
+    ADMUX = adc_channel;
+ 8d8:	80 83       	st	Z, r24
+    ADCSRA |= (1 << ADSC);
+ 8da:	ea e7       	ldi	r30, 0x7A	; 122
+ 8dc:	f0 e0       	ldi	r31, 0x00	; 0
+ 8de:	80 81       	ld	r24, Z
+ 8e0:	80 64       	ori	r24, 0x40	; 64
+ 8e2:	80 83       	st	Z, r24
+    while(!(ADCSRA & (1 << ADIF)));
+ 8e4:	80 81       	ld	r24, Z
+ 8e6:	84 ff       	sbrs	r24, 4
+ 8e8:	fd cf       	rjmp	.-6      	; 0x8e4 <adc_read+0x18>
+    result = ADCL;
+ 8ea:	80 91 78 00 	lds	r24, 0x0078	; 0x800078 <__TEXT_REGION_LENGTH__+0x7e0078>
+    result |= ((3 & ADCH) << 8);
+ 8ee:	20 91 79 00 	lds	r18, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7e0079>
+    ADCSRA |= (1 << ADIF);
+ 8f2:	ea e7       	ldi	r30, 0x7A	; 122
+ 8f4:	f0 e0       	ldi	r31, 0x00	; 0
+ 8f6:	90 81       	ld	r25, Z
+ 8f8:	90 61       	ori	r25, 0x10	; 16
+ 8fa:	90 83       	st	Z, r25
+    return result;
+ 8fc:	23 70       	andi	r18, 0x03	; 3
+ 8fe:	90 e0       	ldi	r25, 0x00	; 0
+}
+ 900:	92 2b       	or	r25, r18
+ 902:	08 95       	ret
+
+00000904 <data_processing>:
+Input   :   unsigned char temp -
+Returns :   return
+Notes   :
+============================================================================*/
+void data_processing(uint8_t temp)
+{
+ 904:	1f 93       	push	r17
+ 906:	cf 93       	push	r28
+ 908:	df 93       	push	r29
+	uint8_t temp1,temp2,temp3,temp4,temp5,temp6,temp7,temp8;
+	uint8_t h11,h12,h13,h14,h15,h16,h17,h18,d1,d2,d3,d4;
+
+	temp1=temp&0x80;
+ 90a:	38 2f       	mov	r19, r24
+ 90c:	30 78       	andi	r19, 0x80	; 128
+	temp2=(temp&0x40)>>3;
+ 90e:	e8 2f       	mov	r30, r24
+ 910:	e0 74       	andi	r30, 0x40	; 64
+ 912:	f0 e0       	ldi	r31, 0x00	; 0
+ 914:	f5 95       	asr	r31
+ 916:	e7 95       	ror	r30
+ 918:	f5 95       	asr	r31
+ 91a:	e7 95       	ror	r30
+ 91c:	f5 95       	asr	r31
+ 91e:	e7 95       	ror	r30
+	temp3=(temp&0x20)<<2;
+ 920:	98 2f       	mov	r25, r24
+ 922:	90 72       	andi	r25, 0x20	; 32
+ 924:	99 0f       	add	r25, r25
+ 926:	99 0f       	add	r25, r25
+	temp4=(temp&0x10)>>1;
+ 928:	68 2f       	mov	r22, r24
+ 92a:	60 71       	andi	r22, 0x10	; 16
+ 92c:	70 e0       	ldi	r23, 0x00	; 0
+ 92e:	75 95       	asr	r23
+ 930:	67 95       	ror	r22
+	temp5=(temp&0x08)<<4;
+ 932:	58 2f       	mov	r21, r24
+ 934:	58 70       	andi	r21, 0x08	; 8
+ 936:	52 95       	swap	r21
+ 938:	50 7f       	andi	r21, 0xF0	; 240
+	temp6=(temp&0x04)<<1;
+ 93a:	f8 2f       	mov	r31, r24
+ 93c:	f4 70       	andi	r31, 0x04	; 4
+ 93e:	ff 0f       	add	r31, r31
+	temp7=(temp&0x02)<<6;
+ 940:	48 2f       	mov	r20, r24
+ 942:	42 70       	andi	r20, 0x02	; 2
+ 944:	42 95       	swap	r20
+ 946:	44 0f       	add	r20, r20
+ 948:	44 0f       	add	r20, r20
+ 94a:	40 7c       	andi	r20, 0xC0	; 192
+	temp8=(temp&0x01)<<3;
+ 94c:	81 70       	andi	r24, 0x01	; 1
+ 94e:	78 2f       	mov	r23, r24
+ 950:	77 0f       	add	r23, r23
+ 952:	77 0f       	add	r23, r23
+ 954:	77 0f       	add	r23, r23
+	h15=temp5|temp5>>1|temp5>>2|temp5>>3;
+	h16=temp6|temp6>>1|temp6>>2|temp6>>3;
+	h17=temp7|temp7>>1|temp7>>2|temp7>>3;
+	h18=temp8|temp8>>1|temp8>>2|temp8>>3;
+	d1=h11|h12;
+	d2=h13|h14;
+ 956:	29 2f       	mov	r18, r25
+ 958:	26 95       	lsr	r18
+ 95a:	89 2f       	mov	r24, r25
+ 95c:	86 95       	lsr	r24
+ 95e:	86 95       	lsr	r24
+ 960:	82 2b       	or	r24, r18
+ 962:	89 2b       	or	r24, r25
+ 964:	96 95       	lsr	r25
+ 966:	96 95       	lsr	r25
+ 968:	96 95       	lsr	r25
+ 96a:	98 2b       	or	r25, r24
+ 96c:	96 2b       	or	r25, r22
+ 96e:	d6 2f       	mov	r29, r22
+ 970:	d6 95       	lsr	r29
+ 972:	d9 2b       	or	r29, r25
+ 974:	86 2f       	mov	r24, r22
+ 976:	86 95       	lsr	r24
+ 978:	86 95       	lsr	r24
+ 97a:	d8 2b       	or	r29, r24
+ 97c:	66 95       	lsr	r22
+ 97e:	66 95       	lsr	r22
+ 980:	66 95       	lsr	r22
+ 982:	d6 2b       	or	r29, r22
+	d3=h15|h16;
+ 984:	95 2f       	mov	r25, r21
+ 986:	96 95       	lsr	r25
+ 988:	85 2f       	mov	r24, r21
+ 98a:	8f 2b       	or	r24, r31
+ 98c:	89 2b       	or	r24, r25
+ 98e:	95 2f       	mov	r25, r21
+ 990:	96 95       	lsr	r25
+ 992:	96 95       	lsr	r25
+ 994:	89 2b       	or	r24, r25
+ 996:	56 95       	lsr	r21
+ 998:	56 95       	lsr	r21
+ 99a:	56 95       	lsr	r21
+ 99c:	58 2b       	or	r21, r24
+ 99e:	1f 2f       	mov	r17, r31
+ 9a0:	16 95       	lsr	r17
+ 9a2:	15 2b       	or	r17, r21
+ 9a4:	8f 2f       	mov	r24, r31
+ 9a6:	86 95       	lsr	r24
+ 9a8:	86 95       	lsr	r24
+ 9aa:	18 2b       	or	r17, r24
+ 9ac:	f6 95       	lsr	r31
+ 9ae:	f6 95       	lsr	r31
+ 9b0:	f6 95       	lsr	r31
+ 9b2:	1f 2b       	or	r17, r31
+	d4=h17|h18;
+ 9b4:	c4 2f       	mov	r28, r20
+ 9b6:	c6 95       	lsr	r28
+ 9b8:	84 2f       	mov	r24, r20
+ 9ba:	87 2b       	or	r24, r23
+ 9bc:	c8 2b       	or	r28, r24
+ 9be:	84 2f       	mov	r24, r20
+ 9c0:	86 95       	lsr	r24
+ 9c2:	86 95       	lsr	r24
+ 9c4:	c8 2b       	or	r28, r24
+ 9c6:	46 95       	lsr	r20
+ 9c8:	46 95       	lsr	r20
+ 9ca:	46 95       	lsr	r20
+ 9cc:	4c 2b       	or	r20, r28
+ 9ce:	c7 2f       	mov	r28, r23
+ 9d0:	c6 95       	lsr	r28
+ 9d2:	c4 2b       	or	r28, r20
+ 9d4:	87 2f       	mov	r24, r23
+ 9d6:	86 95       	lsr	r24
+ 9d8:	86 95       	lsr	r24
+ 9da:	c8 2b       	or	r28, r24
+ 9dc:	76 95       	lsr	r23
+ 9de:	76 95       	lsr	r23
+ 9e0:	76 95       	lsr	r23
+ 9e2:	c7 2b       	or	r28, r23
+
+	oled_write_data(d1);
+ 9e4:	23 2f       	mov	r18, r19
+ 9e6:	26 95       	lsr	r18
+ 9e8:	83 2f       	mov	r24, r19
+ 9ea:	86 95       	lsr	r24
+ 9ec:	86 95       	lsr	r24
+ 9ee:	28 2b       	or	r18, r24
+ 9f0:	23 2b       	or	r18, r19
+ 9f2:	36 95       	lsr	r19
+ 9f4:	36 95       	lsr	r19
+ 9f6:	36 95       	lsr	r19
+ 9f8:	23 2b       	or	r18, r19
+ 9fa:	2e 2b       	or	r18, r30
+ 9fc:	8e 2f       	mov	r24, r30
+ 9fe:	86 95       	lsr	r24
+ a00:	82 2b       	or	r24, r18
+ a02:	9e 2f       	mov	r25, r30
+ a04:	96 95       	lsr	r25
+ a06:	96 95       	lsr	r25
+ a08:	89 2b       	or	r24, r25
+ a0a:	e6 95       	lsr	r30
+ a0c:	e6 95       	lsr	r30
+ a0e:	e6 95       	lsr	r30
+ a10:	8e 2b       	or	r24, r30
+ a12:	7e d0       	rcall	.+252    	; 0xb10 <oled_write_data>
+	oled_write_data(d2);
+ a14:	8d 2f       	mov	r24, r29
+ a16:	7c d0       	rcall	.+248    	; 0xb10 <oled_write_data>
+	oled_write_data(d3);
+ a18:	81 2f       	mov	r24, r17
+ a1a:	7a d0       	rcall	.+244    	; 0xb10 <oled_write_data>
+	oled_write_data(d4);
+ a1c:	8c 2f       	mov	r24, r28
+ a1e:	78 d0       	rcall	.+240    	; 0xb10 <oled_write_data>
+ a20:	df 91       	pop	r29
+}
+ a22:	cf 91       	pop	r28
+ a24:	1f 91       	pop	r17
+ a26:	08 95       	ret
+
+00000a28 <display_picture>:
+ a28:	cf 92       	push	r12
+Input   :   unsigned char pic[] - an array of hexidecimal values
+Returns :   return
+Notes   :
+============================================================================*/
+void display_picture(const unsigned char pic[])
+{
+ a2a:	df 92       	push	r13
+ a2c:	ef 92       	push	r14
+ a2e:	ff 92       	push	r15
+ a30:	0f 93       	push	r16
+ a32:	1f 93       	push	r17
+ a34:	cf 93       	push	r28
+ a36:	df 93       	push	r29
+ a38:	6c 01       	movw	r12, r24
+	uint8_t i,j;
+	set_column_address(Shift+0x00,Shift+0x77);
+ a3a:	63 e9       	ldi	r22, 0x93	; 147
+ a3c:	8c e1       	ldi	r24, 0x1C	; 28
+ a3e:	74 d0       	rcall	.+232    	; 0xb28 <set_column_address>
+	set_row_address(0x00,0x7F);
+ a40:	6f e7       	ldi	r22, 0x7F	; 127
+ a42:	80 e0       	ldi	r24, 0x00	; 0
+	set_write_RAM();
+ a44:	7e d0       	rcall	.+252    	; 0xb42 <set_row_address>
+ a46:	8a d0       	rcall	.+276    	; 0xb5c <set_write_RAM>
+ a48:	76 01       	movw	r14, r12
+ a4a:	88 ef       	ldi	r24, 0xF8	; 248
+ a4c:	d8 1a       	sub	r13, r24
+
+	for(i=0;i<64;i++)
+	{
+		for(j=0;j<60;j++)
+		{
+			data_processing(pgm_read_byte(&pic[i*32+j]));
+ a4e:	0d c0       	rjmp	.+26     	; 0xa6a <display_picture+0x42>
+ a50:	fe 01       	movw	r30, r28
+ a52:	84 91       	lpm	r24, Z
+ a54:	57 df       	rcall	.-338    	; 0x904 <data_processing>
+ a56:	21 96       	adiw	r28, 0x01	; 1
+	set_row_address(0x00,0x7F);
+	set_write_RAM();
+
+	for(i=0;i<64;i++)
+	{
+		for(j=0;j<60;j++)
+ a58:	c0 17       	cp	r28, r16
+ a5a:	d1 07       	cpc	r29, r17
+ a5c:	c9 f7       	brne	.-14     	; 0xa50 <display_picture+0x28>
+ a5e:	f0 e2       	ldi	r31, 0x20	; 32
+ a60:	ef 0e       	add	r14, r31
+ a62:	f1 1c       	adc	r15, r1
+	uint8_t i,j;
+	set_column_address(Shift+0x00,Shift+0x77);
+	set_row_address(0x00,0x7F);
+	set_write_RAM();
+
+	for(i=0;i<64;i++)
+ a64:	ec 14       	cp	r14, r12
+ a66:	fd 04       	cpc	r15, r13
+ a68:	29 f0       	breq	.+10     	; 0xa74 <display_picture+0x4c>
+ a6a:	87 01       	movw	r16, r14
+ a6c:	04 5c       	subi	r16, 0xC4	; 196
+ a6e:	1f 4f       	sbci	r17, 0xFF	; 255
+Input   :   unsigned char pic[] - an array of hexidecimal values
+Returns :   return
+Notes   :
+============================================================================*/
+void display_picture(const unsigned char pic[])
+{
+ a70:	e7 01       	movw	r28, r14
+ a72:	ee cf       	rjmp	.-36     	; 0xa50 <display_picture+0x28>
+		{
+			data_processing(pgm_read_byte(&pic[i*32+j]));
+		}
+	}
+	return;
+}
+ a74:	df 91       	pop	r29
+ a76:	cf 91       	pop	r28
+ a78:	1f 91       	pop	r17
+ a7a:	0f 91       	pop	r16
+ a7c:	ff 90       	pop	r15
+ a7e:	ef 90       	pop	r14
+ a80:	df 90       	pop	r13
+ a82:	cf 90       	pop	r12
+ a84:	08 95       	ret
+
+00000a86 <splash_screen>:
+Returns :   void
+Notes   :
+============================================================================*/
+void splash_screen()
+{
+	fill_RAM(CLEAR_SCREEN);
+ a86:	80 e0       	ldi	r24, 0x00	; 0
+ a88:	f9 d0       	rcall	.+498    	; 0xc7c <fill_RAM>
+	display_picture(MOTORSPORT);
+ a8a:	8c e8       	ldi	r24, 0x8C	; 140
+ a8c:	90 e0       	ldi	r25, 0x00	; 0
+ a8e:	cc df       	rcall	.-104    	; 0xa28 <display_picture>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ a90:	2f ef       	ldi	r18, 0xFF	; 255
+ a92:	8b e7       	ldi	r24, 0x7B	; 123
+ a94:	92 e9       	ldi	r25, 0x92	; 146
+ a96:	21 50       	subi	r18, 0x01	; 1
+ a98:	80 40       	sbci	r24, 0x00	; 0
+ a9a:	90 40       	sbci	r25, 0x00	; 0
+ a9c:	e1 f7       	brne	.-8      	; 0xa96 <splash_screen+0x10>
+ a9e:	00 c0       	rjmp	.+0      	; 0xaa0 <splash_screen+0x1a>
+	_delay_ms(3000);
+	fill_RAM(CLEAR_SCREEN);
+ aa0:	00 00       	nop
+ aa2:	80 e0       	ldi	r24, 0x00	; 0
+ aa4:	eb c0       	rjmp	.+470    	; 0xc7c <fill_RAM>
+ aa6:	08 95       	ret
+
+00000aa8 <steering_wheel_init>:
+Returns :   void
+Notes   :
+============================================================================*/
+void steering_wheel_init() 
+{
+	DDRD |= 0b11001000; // LEDs as outputs, DC
+ aa8:	8a b1       	in	r24, 0x0a	; 10
+ aaa:	88 6c       	ori	r24, 0xC8	; 200
+ aac:	8a b9       	out	0x0a, r24	; 10
+	/* Set MOSI and SCK output, all others input */
+	DDRB |= 0b10100011; // CS/SS, reset
+ aae:	84 b1       	in	r24, 0x04	; 4
+ ab0:	83 6a       	ori	r24, 0xA3	; 163
+ ab2:	84 b9       	out	0x04, r24	; 4
+	DDRA |= 0b00000000; // Set buttons as input
+ ab4:	81 b1       	in	r24, 0x01	; 1
+ ab6:	81 b9       	out	0x01, r24	; 1
+	// TXD/MOSI_A, OLED_CS	
+	SPI_CLOCK_HIGH;
+ ab8:	2f 9a       	sbi	0x05, 7	; 5
+	adc_init();
+ aba:	f9 de       	rcall	.-526    	; 0x8ae <adc_init>
+	spi_init();
+ abc:	54 d1       	rcall	.+680    	; 0xd66 <spi_init>
+	OLED_init();	
+ abe:	1b d1       	rcall	.+566    	; 0xcf6 <OLED_init>
+	sei(); // Enable interrupts
+ ac0:	78 94       	sei
+	splash_screen();
+ ac2:	e1 cf       	rjmp	.-62     	; 0xa86 <splash_screen>
+ ac4:	08 95       	ret
+
+00000ac6 <main>:
+ ac6:	f0 df       	rcall	.-32     	; 0xaa8 <steering_wheel_init>
+			//LED_A_OFF;
+		//} else {
+			//LED_A_ON;
+		//}	
+
+		pot = adc_read(0);
+ ac8:	80 e0       	ldi	r24, 0x00	; 0
+ aca:	00 df       	rcall	.-512    	; 0x8cc <adc_read>
+ acc:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <_edata+0x1>
+ ad0:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <_edata>
+		if(pot >= 0 && pot < 250) {
+ ad4:	8a 3f       	cpi	r24, 0xFA	; 250
+ ad6:	91 05       	cpc	r25, r1
+ ad8:	18 f4       	brcc	.+6      	; 0xae0 <main+0x1a>
+			LED_A_OFF;
+ ada:	5e 98       	cbi	0x0b, 6	; 11
+			LED_B_OFF;
+ adc:	5f 98       	cbi	0x0b, 7	; 11
+ ade:	f4 cf       	rjmp	.-24     	; 0xac8 <main+0x2>
+		} else if(pot >= 250 && pot < 500) {
+ ae0:	9c 01       	movw	r18, r24
+ ae2:	2a 5f       	subi	r18, 0xFA	; 250
+ ae4:	31 09       	sbc	r19, r1
+ ae6:	2a 3f       	cpi	r18, 0xFA	; 250
+ ae8:	31 05       	cpc	r19, r1
+ aea:	18 f4       	brcc	.+6      	; 0xaf2 <main+0x2c>
+			LED_A_ON;
+ aec:	5e 9a       	sbi	0x0b, 6	; 11
+			LED_B_OFF;
+ aee:	5f 98       	cbi	0x0b, 7	; 11
+ af0:	eb cf       	rjmp	.-42     	; 0xac8 <main+0x2>
+		} else if(pot >= 500 && pot < 750) {
+ af2:	9c 01       	movw	r18, r24
+ af4:	24 5f       	subi	r18, 0xF4	; 244
+ af6:	31 40       	sbci	r19, 0x01	; 1
+ af8:	2a 3f       	cpi	r18, 0xFA	; 250
+ afa:	31 05       	cpc	r19, r1
+ afc:	18 f4       	brcc	.+6      	; 0xb04 <main+0x3e>
+			LED_A_OFF;
+ afe:	5e 98       	cbi	0x0b, 6	; 11
+			LED_B_ON;
+ b00:	5f 9a       	sbi	0x0b, 7	; 11
+ b02:	e2 cf       	rjmp	.-60     	; 0xac8 <main+0x2>
+		} else if(pot >= 750) {
+ b04:	8e 3e       	cpi	r24, 0xEE	; 238
+ b06:	92 40       	sbci	r25, 0x02	; 2
+ b08:	f8 f2       	brcs	.-66     	; 0xac8 <main+0x2>
+			LED_A_ON;
+ b0a:	5e 9a       	sbi	0x0b, 6	; 11
+			LED_B_ON;
+ b0c:	5f 9a       	sbi	0x0b, 7	; 11
+ b0e:	dc cf       	rjmp	.-72     	; 0xac8 <main+0x2>
+
+00000b10 <oled_write_data>:
+}
+
+
+void set_display_on_off(uint8_t d)
+{
+	oled_write_instruction(0xAE|d);			// Set Display On/Off
+ b10:	29 98       	cbi	0x05, 1	; 5
+ b12:	5b 9a       	sbi	0x0b, 3	; 11
+ b14:	2d d1       	rcall	.+602    	; 0xd70 <spi_send_byte>
+ b16:	5b 9a       	sbi	0x0b, 3	; 11
+ b18:	29 9a       	sbi	0x05, 1	; 5
+ b1a:	08 95       	ret
+
+00000b1c <oled_write_instruction>:
+ b1c:	5b 98       	cbi	0x0b, 3	; 11
+ b1e:	29 98       	cbi	0x05, 1	; 5
+ b20:	27 d1       	rcall	.+590    	; 0xd70 <spi_send_byte>
+ b22:	5b 9a       	sbi	0x0b, 3	; 11
+ b24:	29 9a       	sbi	0x05, 1	; 5
+ b26:	08 95       	ret
+
+00000b28 <set_column_address>:
+ b28:	cf 93       	push	r28
+ b2a:	df 93       	push	r29
+ b2c:	d8 2f       	mov	r29, r24
+ b2e:	c6 2f       	mov	r28, r22
+ b30:	85 e1       	ldi	r24, 0x15	; 21
+ b32:	f4 df       	rcall	.-24     	; 0xb1c <oled_write_instruction>
+ b34:	8d 2f       	mov	r24, r29
+ b36:	ec df       	rcall	.-40     	; 0xb10 <oled_write_data>
+ b38:	8c 2f       	mov	r24, r28
+ b3a:	ea df       	rcall	.-44     	; 0xb10 <oled_write_data>
+ b3c:	df 91       	pop	r29
+ b3e:	cf 91       	pop	r28
+ b40:	08 95       	ret
+
+00000b42 <set_row_address>:
+ b42:	cf 93       	push	r28
+ b44:	df 93       	push	r29
+ b46:	d8 2f       	mov	r29, r24
+ b48:	c6 2f       	mov	r28, r22
+ b4a:	85 e7       	ldi	r24, 0x75	; 117
+ b4c:	e7 df       	rcall	.-50     	; 0xb1c <oled_write_instruction>
+ b4e:	8d 2f       	mov	r24, r29
+ b50:	df df       	rcall	.-66     	; 0xb10 <oled_write_data>
+ b52:	8c 2f       	mov	r24, r28
+ b54:	dd df       	rcall	.-70     	; 0xb10 <oled_write_data>
+ b56:	df 91       	pop	r29
+ b58:	cf 91       	pop	r28
+ b5a:	08 95       	ret
+
+00000b5c <set_write_RAM>:
+ b5c:	8c e5       	ldi	r24, 0x5C	; 92
+ b5e:	de cf       	rjmp	.-68     	; 0xb1c <oled_write_instruction>
+ b60:	08 95       	ret
+
+00000b62 <set_remap_format>:
+ b62:	cf 93       	push	r28
+ b64:	c8 2f       	mov	r28, r24
+ b66:	80 ea       	ldi	r24, 0xA0	; 160
+ b68:	d9 df       	rcall	.-78     	; 0xb1c <oled_write_instruction>
+ b6a:	8c 2f       	mov	r24, r28
+ b6c:	d1 df       	rcall	.-94     	; 0xb10 <oled_write_data>
+ b6e:	81 e1       	ldi	r24, 0x11	; 17
+ b70:	cf df       	rcall	.-98     	; 0xb10 <oled_write_data>
+ b72:	cf 91       	pop	r28
+ b74:	08 95       	ret
+
+00000b76 <set_start_line>:
+ b76:	cf 93       	push	r28
+ b78:	c8 2f       	mov	r28, r24
+ b7a:	81 ea       	ldi	r24, 0xA1	; 161
+ b7c:	cf df       	rcall	.-98     	; 0xb1c <oled_write_instruction>
+ b7e:	8c 2f       	mov	r24, r28
+ b80:	c7 df       	rcall	.-114    	; 0xb10 <oled_write_data>
+ b82:	cf 91       	pop	r28
+ b84:	08 95       	ret
+
+00000b86 <set_display_offset>:
+ b86:	cf 93       	push	r28
+ b88:	c8 2f       	mov	r28, r24
+ b8a:	82 ea       	ldi	r24, 0xA2	; 162
+ b8c:	c7 df       	rcall	.-114    	; 0xb1c <oled_write_instruction>
+ b8e:	8c 2f       	mov	r24, r28
+ b90:	bf df       	rcall	.-130    	; 0xb10 <oled_write_data>
+ b92:	cf 91       	pop	r28
+ b94:	08 95       	ret
+
+00000b96 <set_function_selection>:
+ b96:	cf 93       	push	r28
+ b98:	c8 2f       	mov	r28, r24
+ b9a:	8b ea       	ldi	r24, 0xAB	; 171
+ b9c:	bf df       	rcall	.-130    	; 0xb1c <oled_write_instruction>
+ b9e:	8c 2f       	mov	r24, r28
+ ba0:	b7 df       	rcall	.-146    	; 0xb10 <oled_write_data>
+ ba2:	cf 91       	pop	r28
+ ba4:	08 95       	ret
+
+00000ba6 <set_phase_length>:
+	//     0xAF (0x01) => Display On (Sleep Mode Off)
+}
+
+
+void set_phase_length(uint8_t d)
+{
+ ba6:	cf 93       	push	r28
+ ba8:	c8 2f       	mov	r28, r24
+	oled_write_instruction(0xB1);			// Phase 1 (Reset) & Phase 2 (Pre-Charge) Period Adjustment
+ baa:	81 eb       	ldi	r24, 0xB1	; 177
+ bac:	b7 df       	rcall	.-146    	; 0xb1c <oled_write_instruction>
+	oled_write_data(d);				//   Default => 0x74 (7 Display Clocks [Phase 2] / 9 Display Clocks [Phase 1])
+ bae:	8c 2f       	mov	r24, r28
+ bb0:	af df       	rcall	.-162    	; 0xb10 <oled_write_data>
+	//     D[3:0] => Phase 1 Period in 5~31 Display Clocks
+	//     D[7:4] => Phase 2 Period in 3~15 Display Clocks
+}
+ bb2:	cf 91       	pop	r28
+ bb4:	08 95       	ret
+
+00000bb6 <set_display_clock>:
+
+
+void set_display_clock(uint8_t d)
+{
+ bb6:	cf 93       	push	r28
+ bb8:	c8 2f       	mov	r28, r24
+	oled_write_instruction(0xB3);			// Set Display Clock Divider / Oscillator Frequency
+ bba:	83 eb       	ldi	r24, 0xB3	; 179
+ bbc:	af df       	rcall	.-162    	; 0xb1c <oled_write_instruction>
+	oled_write_data(d);				//   Default => 0xD0
+ bbe:	8c 2f       	mov	r24, r28
+ bc0:	a7 df       	rcall	.-178    	; 0xb10 <oled_write_data>
+	//     A[3:0] => Display Clock Divider
+	//     A[7:4] => Oscillator Frequency
+}
+ bc2:	cf 91       	pop	r28
+ bc4:	08 95       	ret
+
+00000bc6 <set_display_enhancement_A>:
+
+
+void set_display_enhancement_A(uint8_t a, uint8_t b)
+{
+ bc6:	cf 93       	push	r28
+ bc8:	df 93       	push	r29
+ bca:	d8 2f       	mov	r29, r24
+ bcc:	c6 2f       	mov	r28, r22
+	oled_write_instruction(0xB4);			// Display Enhancement
+ bce:	84 eb       	ldi	r24, 0xB4	; 180
+ bd0:	a5 df       	rcall	.-182    	; 0xb1c <oled_write_instruction>
+	oled_write_data(0xA0|a);			//   Default => 0xA2
+ bd2:	8d 2f       	mov	r24, r29
+ bd4:	80 6a       	ori	r24, 0xA0	; 160
+ bd6:	9c df       	rcall	.-200    	; 0xb10 <oled_write_data>
+	//     0xA0 (0x00) => Enable External VSL
+	//     0xA2 (0x02) => Enable Internal VSL (Kept VSL Pin N.C.)
+	oled_write_data(0x05|b);			//   Default => 0xB5
+ bd8:	8c 2f       	mov	r24, r28
+ bda:	85 60       	ori	r24, 0x05	; 5
+ bdc:	99 df       	rcall	.-206    	; 0xb10 <oled_write_data>
+	//     0xB5 (0xB0) => Normal
+	//     0xFD (0xF8) => Enhance Low Gray Scale Display Quality
+}
+ bde:	df 91       	pop	r29
+ be0:	cf 91       	pop	r28
+ be2:	08 95       	ret
+
+00000be4 <set_GPIO>:
+
+
+void set_GPIO(uint8_t d)
+{
+ be4:	cf 93       	push	r28
+ be6:	c8 2f       	mov	r28, r24
+	oled_write_instruction(0xB5);			// General Purpose IO
+ be8:	85 eb       	ldi	r24, 0xB5	; 181
+ bea:	98 df       	rcall	.-208    	; 0xb1c <oled_write_instruction>
+	oled_write_data(d);				//   Default => 0x0A (GPIO Pins output Low Level.)
+ bec:	8c 2f       	mov	r24, r28
+ bee:	90 df       	rcall	.-224    	; 0xb10 <oled_write_data>
+}
+ bf0:	cf 91       	pop	r28
+ bf2:	08 95       	ret
+
+00000bf4 <set_precharge_period>:
+
+
+void set_precharge_period(uint8_t d)
+{
+ bf4:	cf 93       	push	r28
+ bf6:	c8 2f       	mov	r28, r24
+	oled_write_instruction(0xB6);			// Set Second Pre-Charge Period
+ bf8:	86 eb       	ldi	r24, 0xB6	; 182
+ bfa:	90 df       	rcall	.-224    	; 0xb1c <oled_write_instruction>
+	oled_write_data(d);				//   Default => 0x08 (8 Display Clocks)
+ bfc:	8c 2f       	mov	r24, r28
+ bfe:	88 df       	rcall	.-240    	; 0xb10 <oled_write_data>
+}
+ c00:	cf 91       	pop	r28
+ c02:	08 95       	ret
+
+00000c04 <set_precharge_voltage>:
+
+
+void set_precharge_voltage(uint8_t d)
+{
+ c04:	cf 93       	push	r28
+ c06:	c8 2f       	mov	r28, r24
+	oled_write_instruction(0xBB);			// Set Pre-Charge Voltage Level
+ c08:	8b eb       	ldi	r24, 0xBB	; 187
+ c0a:	88 df       	rcall	.-240    	; 0xb1c <oled_write_instruction>
+	oled_write_data(d);				//   Default => 0x17 (0.50*VCC)
+ c0c:	8c 2f       	mov	r24, r28
+ c0e:	80 df       	rcall	.-256    	; 0xb10 <oled_write_data>
+}
+ c10:	cf 91       	pop	r28
+ c12:	08 95       	ret
+
+00000c14 <set_VCOMH>:
+
+
+void set_VCOMH(uint8_t d)
+{
+ c14:	cf 93       	push	r28
+ c16:	c8 2f       	mov	r28, r24
+	oled_write_instruction(0xBE);			// Set COM Deselect Voltage Level
+ c18:	8e eb       	ldi	r24, 0xBE	; 190
+ c1a:	80 df       	rcall	.-256    	; 0xb1c <oled_write_instruction>
+	oled_write_data(d);				//   Default => 0x04 (0.80*VCC)
+ c1c:	8c 2f       	mov	r24, r28
+ c1e:	78 df       	rcall	.-272    	; 0xb10 <oled_write_data>
+}
+ c20:	cf 91       	pop	r28
+ c22:	08 95       	ret
+
+00000c24 <set_contrast_current>:
+
+
+void set_contrast_current(uint8_t d)
+{
+ c24:	cf 93       	push	r28
+ c26:	c8 2f       	mov	r28, r24
+	oled_write_instruction(0xC1);			// Set Contrast Current
+ c28:	81 ec       	ldi	r24, 0xC1	; 193
+ c2a:	78 df       	rcall	.-272    	; 0xb1c <oled_write_instruction>
+	oled_write_data(d);				//   Default => 0x7F
+ c2c:	8c 2f       	mov	r24, r28
+ c2e:	70 df       	rcall	.-288    	; 0xb10 <oled_write_data>
+}
+ c30:	cf 91       	pop	r28
+ c32:	08 95       	ret
+
+00000c34 <set_master_current>:
+
+
+void set_master_current(uint8_t d)
+{
+ c34:	cf 93       	push	r28
+ c36:	c8 2f       	mov	r28, r24
+	oled_write_instruction(0xC7);			// Master Contrast Current Control
+ c38:	87 ec       	ldi	r24, 0xC7	; 199
+ c3a:	70 df       	rcall	.-288    	; 0xb1c <oled_write_instruction>
+	oled_write_data(d);				//   Default => 0x0f (Maximum)
+ c3c:	8c 2f       	mov	r24, r28
+ c3e:	68 df       	rcall	.-304    	; 0xb10 <oled_write_data>
+}
+ c40:	cf 91       	pop	r28
+ c42:	08 95       	ret
+
+00000c44 <set_multiplex_ratio>:
+
+
+void set_multiplex_ratio(uint8_t d)
+{
+ c44:	cf 93       	push	r28
+ c46:	c8 2f       	mov	r28, r24
+	oled_write_instruction(0xCA);			// Set Multiplex Ratio
+ c48:	8a ec       	ldi	r24, 0xCA	; 202
+ c4a:	68 df       	rcall	.-304    	; 0xb1c <oled_write_instruction>
+	oled_write_data(d);				//   Default => 0x7F (1/128 Duty)
+ c4c:	8c 2f       	mov	r24, r28
+ c4e:	60 df       	rcall	.-320    	; 0xb10 <oled_write_data>
+}
+ c50:	cf 91       	pop	r28
+ c52:	08 95       	ret
+
+00000c54 <set_display_enhancement_B>:
+
+
+void set_display_enhancement_B(uint8_t d)
+{
+ c54:	cf 93       	push	r28
+ c56:	c8 2f       	mov	r28, r24
+	oled_write_instruction(0xD1);			// Display Enhancement
+ c58:	81 ed       	ldi	r24, 0xD1	; 209
+ c5a:	60 df       	rcall	.-320    	; 0xb1c <oled_write_instruction>
+	oled_write_data(0x82|d);			//   Default => 0xA2
+ c5c:	8c 2f       	mov	r24, r28
+ c5e:	82 68       	ori	r24, 0x82	; 130
+ c60:	57 df       	rcall	.-338    	; 0xb10 <oled_write_data>
+	//     0x82 (0x00) => Reserved
+	//     0xA2 (0x20) => Normal
+	oled_write_data(0x20);
+ c62:	80 e2       	ldi	r24, 0x20	; 32
+ c64:	55 df       	rcall	.-342    	; 0xb10 <oled_write_data>
+ c66:	cf 91       	pop	r28
+}
+ c68:	08 95       	ret
+
+00000c6a <set_command_lock>:
+ c6a:	cf 93       	push	r28
+
+
+void set_command_lock(uint8_t d)
+{
+ c6c:	c8 2f       	mov	r28, r24
+	oled_write_instruction(0xFD);			// Set Command Lock
+ c6e:	8d ef       	ldi	r24, 0xFD	; 253
+ c70:	55 df       	rcall	.-342    	; 0xb1c <oled_write_instruction>
+	oled_write_data(0x12|d);			//   Default => 0x12
+ c72:	8c 2f       	mov	r24, r28
+ c74:	82 61       	ori	r24, 0x12	; 18
+ c76:	4c df       	rcall	.-360    	; 0xb10 <oled_write_data>
+	//     0x12 => Driver IC interface is unlocked from entering command.
+	//     0x16 => All Commands are locked except 0xFD.
+}
+ c78:	cf 91       	pop	r28
+ c7a:	08 95       	ret
+
+00000c7c <fill_RAM>:
+
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  Show Regular Pattern (Full Screen)
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+void fill_RAM(uint8_t Data)
+{
+ c7c:	1f 93       	push	r17
+ c7e:	cf 93       	push	r28
+ c80:	df 93       	push	r29
+ c82:	d8 2f       	mov	r29, r24
+	uint8_t i,j;
+
+	set_column_address(0x00,0x77);
+ c84:	67 e7       	ldi	r22, 0x77	; 119
+ c86:	80 e0       	ldi	r24, 0x00	; 0
+ c88:	4f df       	rcall	.-354    	; 0xb28 <set_column_address>
+	set_row_address(0x00,0x7F);
+ c8a:	6f e7       	ldi	r22, 0x7F	; 127
+ c8c:	80 e0       	ldi	r24, 0x00	; 0
+	set_write_RAM();
+ c8e:	59 df       	rcall	.-334    	; 0xb42 <set_row_address>
+ c90:	65 df       	rcall	.-310    	; 0xb5c <set_write_RAM>
+ c92:	10 e0       	ldi	r17, 0x00	; 0
+
+	for(i=0;i<128;i++)
+	{
+		for(j=0;j<120;j++)
+		{
+			oled_write_data(Data);
+ c94:	07 c0       	rjmp	.+14     	; 0xca4 <fill_RAM+0x28>
+ c96:	8d 2f       	mov	r24, r29
+ c98:	3b df       	rcall	.-394    	; 0xb10 <oled_write_data>
+ c9a:	c1 50       	subi	r28, 0x01	; 1
+	set_row_address(0x00,0x7F);
+	set_write_RAM();
+
+	for(i=0;i<128;i++)
+	{
+		for(j=0;j<120;j++)
+ c9c:	e1 f7       	brne	.-8      	; 0xc96 <fill_RAM+0x1a>
+
+	set_column_address(0x00,0x77);
+	set_row_address(0x00,0x7F);
+	set_write_RAM();
+
+	for(i=0;i<128;i++)
+ c9e:	1f 5f       	subi	r17, 0xFF	; 255
+ ca0:	10 38       	cpi	r17, 0x80	; 128
+ ca2:	11 f0       	breq	.+4      	; 0xca8 <fill_RAM+0x2c>
+
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  Show Regular Pattern (Full Screen)
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+void fill_RAM(uint8_t Data)
+{
+ ca4:	c8 e7       	ldi	r28, 0x78	; 120
+ ca6:	f7 cf       	rjmp	.-18     	; 0xc96 <fill_RAM+0x1a>
+		{
+			oled_write_data(Data);
+			//Write_Data(Data);
+		}
+	}
+}
+ ca8:	df 91       	pop	r29
+ caa:	cf 91       	pop	r28
+ cac:	1f 91       	pop	r17
+ cae:	08 95       	ret
+
+00000cb0 <set_gray_scale_table>:
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  Gray Scale Table Setting (Full Screen)
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+void set_gray_scale_table()
+{
+	oled_write_instruction(0xB8);			// Set Gray Scale Table
+ cb0:	88 eb       	ldi	r24, 0xB8	; 184
+ cb2:	34 df       	rcall	.-408    	; 0xb1c <oled_write_instruction>
+	oled_write_data(0x0C);			//   Gray Scale Level 1
+ cb4:	8c e0       	ldi	r24, 0x0C	; 12
+ cb6:	2c df       	rcall	.-424    	; 0xb10 <oled_write_data>
+	oled_write_data(0x18);			//   Gray Scale Level 2
+ cb8:	88 e1       	ldi	r24, 0x18	; 24
+ cba:	2a df       	rcall	.-428    	; 0xb10 <oled_write_data>
+	oled_write_data(0x24);			//   Gray Scale Level 3
+ cbc:	84 e2       	ldi	r24, 0x24	; 36
+ cbe:	28 df       	rcall	.-432    	; 0xb10 <oled_write_data>
+	oled_write_data(0x30);			//   Gray Scale Level 4
+ cc0:	80 e3       	ldi	r24, 0x30	; 48
+ cc2:	26 df       	rcall	.-436    	; 0xb10 <oled_write_data>
+	oled_write_data(0x3C);			//   Gray Scale Level 5
+ cc4:	8c e3       	ldi	r24, 0x3C	; 60
+ cc6:	24 df       	rcall	.-440    	; 0xb10 <oled_write_data>
+	oled_write_data(0x48);			//   Gray Scale Level 6
+ cc8:	88 e4       	ldi	r24, 0x48	; 72
+ cca:	22 df       	rcall	.-444    	; 0xb10 <oled_write_data>
+	oled_write_data(0x54);			//   Gray Scale Level 7
+ ccc:	84 e5       	ldi	r24, 0x54	; 84
+ cce:	20 df       	rcall	.-448    	; 0xb10 <oled_write_data>
+	oled_write_data(0x60);			//   Gray Scale Level 8
+ cd0:	80 e6       	ldi	r24, 0x60	; 96
+ cd2:	1e df       	rcall	.-452    	; 0xb10 <oled_write_data>
+	oled_write_data(0x6C);			//   Gray Scale Level 9
+ cd4:	8c e6       	ldi	r24, 0x6C	; 108
+ cd6:	1c df       	rcall	.-456    	; 0xb10 <oled_write_data>
+	oled_write_data(0x78);			//   Gray Scale Level 10
+ cd8:	88 e7       	ldi	r24, 0x78	; 120
+ cda:	1a df       	rcall	.-460    	; 0xb10 <oled_write_data>
+	oled_write_data(0x84);			//   Gray Scale Level 11
+ cdc:	84 e8       	ldi	r24, 0x84	; 132
+ cde:	18 df       	rcall	.-464    	; 0xb10 <oled_write_data>
+	oled_write_data(0x90);			//   Gray Scale Level 12
+ ce0:	80 e9       	ldi	r24, 0x90	; 144
+ ce2:	16 df       	rcall	.-468    	; 0xb10 <oled_write_data>
+ ce4:	8c e9       	ldi	r24, 0x9C	; 156
+	oled_write_data(0x9C);			//   Gray Scale Level 13
+ ce6:	14 df       	rcall	.-472    	; 0xb10 <oled_write_data>
+ ce8:	88 ea       	ldi	r24, 0xA8	; 168
+ cea:	12 df       	rcall	.-476    	; 0xb10 <oled_write_data>
+	oled_write_data(0xA8);			//   Gray Scale Level 14
+ cec:	84 eb       	ldi	r24, 0xB4	; 180
+ cee:	10 df       	rcall	.-480    	; 0xb10 <oled_write_data>
+ cf0:	80 e0       	ldi	r24, 0x00	; 0
+	oled_write_data(0xB4);			//   Gray Scale Level 15
+ cf2:	14 cf       	rjmp	.-472    	; 0xb1c <oled_write_instruction>
+ cf4:	08 95       	ret
+
+00000cf6 <OLED_init>:
+ cf6:	28 98       	cbi	0x05, 0	; 5
+
+	oled_write_instruction(0x00);			// Enable Gray Scale Table
+ cf8:	2f ef       	ldi	r18, 0xFF	; 255
+ cfa:	83 ed       	ldi	r24, 0xD3	; 211
+ cfc:	90 e3       	ldi	r25, 0x30	; 48
+ cfe:	21 50       	subi	r18, 0x01	; 1
+ d00:	80 40       	sbci	r24, 0x00	; 0
+ d02:	90 40       	sbci	r25, 0x00	; 0
+ d04:	e1 f7       	brne	.-8      	; 0xcfe <OLED_init+0x8>
+ d06:	00 c0       	rjmp	.+0      	; 0xd08 <OLED_init+0x12>
+ d08:	00 00       	nop
+void OLED_init(void)
+{
+	OLED_RESET_LOW;
+	//Delay(1000);
+	_delay_ms(1000);
+	OLED_RESET_HIGH;
+ d0a:	28 9a       	sbi	0x05, 0	; 5
+	
+	set_command_lock(0x12);			// Unlock Basic Commands (0x12/0x16)
+ d0c:	82 e1       	ldi	r24, 0x12	; 18
+ d0e:	ad df       	rcall	.-166    	; 0xc6a <set_command_lock>
+}
+
+
+void set_display_on_off(uint8_t d)
+{
+	oled_write_instruction(0xAE|d);			// Set Display On/Off
+ d10:	8e ea       	ldi	r24, 0xAE	; 174
+ d12:	04 df       	rcall	.-504    	; 0xb1c <oled_write_instruction>
+	_delay_ms(1000);
+	OLED_RESET_HIGH;
+	
+	set_command_lock(0x12);			// Unlock Basic Commands (0x12/0x16)
+	set_display_on_off(0x00);		// Display Off (0x00/0x01)
+	set_display_clock(0x91);		// Set Clock as 80 Frames/Sec
+ d14:	81 e9       	ldi	r24, 0x91	; 145
+ d16:	4f df       	rcall	.-354    	; 0xbb6 <set_display_clock>
+	set_multiplex_ratio(0x3F);		// 1/64 Duty (0x0F~0x3F)
+ d18:	8f e3       	ldi	r24, 0x3F	; 63
+ d1a:	94 df       	rcall	.-216    	; 0xc44 <set_multiplex_ratio>
+	set_display_offset(0x00);		// Shift Mapping RAM Counter (0x00~0x3F)
+ d1c:	80 e0       	ldi	r24, 0x00	; 0
+ d1e:	33 df       	rcall	.-410    	; 0xb86 <set_display_offset>
+	set_start_line(0x00);			// Set Mapping RAM Display Start Line (0x00~0x7F)
+ d20:	80 e0       	ldi	r24, 0x00	; 0
+ d22:	29 df       	rcall	.-430    	; 0xb76 <set_start_line>
+	set_remap_format(0x14);			// Set Horizontal Address Increment
+ d24:	84 e1       	ldi	r24, 0x14	; 20
+ d26:	1d df       	rcall	.-454    	; 0xb62 <set_remap_format>
+	//     Column Address 0 Mapped to SEG0
+	//     Disable Nibble Remap
+	//     Scan from COM[N-1] to COM0
+	//     Disable COM Split Odd Even
+	//     Enable Dual COM Line Mode
+	set_GPIO(0x00);							// Disable GPIO Pins Input
+ d28:	80 e0       	ldi	r24, 0x00	; 0
+ d2a:	5c df       	rcall	.-328    	; 0xbe4 <set_GPIO>
+	set_function_selection(0x01);			// Enable Internal VDD Regulator
+ d2c:	81 e0       	ldi	r24, 0x01	; 1
+	set_display_enhancement_A(0xA0,0xFD);	// Enable External VSL
+ d2e:	33 df       	rcall	.-410    	; 0xb96 <set_function_selection>
+ d30:	6d ef       	ldi	r22, 0xFD	; 253
+	// Set Low Gray Scale Enhancement
+	set_contrast_current(0x7F);				// Set Segment Output Current
+ d32:	80 ea       	ldi	r24, 0xA0	; 160
+ d34:	48 df       	rcall	.-368    	; 0xbc6 <set_display_enhancement_A>
+	set_master_current(BRIGHTNESS);			// Set Scale Factor of Segment Output Current Control
+ d36:	8f e7       	ldi	r24, 0x7F	; 127
+ d38:	75 df       	rcall	.-278    	; 0xc24 <set_contrast_current>
+	set_gray_scale_table();					// Set Pulse Width for Gray Scale Table
+ d3a:	8f e0       	ldi	r24, 0x0F	; 15
+	set_phase_length(0xE2);					// Set Phase 1 as 5 Clocks & Phase 2 as 14 Clocks
+ d3c:	7b df       	rcall	.-266    	; 0xc34 <set_master_current>
+ d3e:	b8 df       	rcall	.-144    	; 0xcb0 <set_gray_scale_table>
+	set_display_enhancement_B(0x20);		// Enhance Driving Scheme Capability (0x00/0x20)
+ d40:	82 ee       	ldi	r24, 0xE2	; 226
+ d42:	31 df       	rcall	.-414    	; 0xba6 <set_phase_length>
+	set_precharge_voltage(0x1F);			// Set Pre-Charge Voltage Level as 0.60*VCC
+ d44:	80 e2       	ldi	r24, 0x20	; 32
+ d46:	86 df       	rcall	.-244    	; 0xc54 <set_display_enhancement_B>
+ d48:	8f e1       	ldi	r24, 0x1F	; 31
+	set_precharge_period(0x08);				// Set Second Pre-Charge Period as 8 Clocks
+ d4a:	5c df       	rcall	.-328    	; 0xc04 <set_precharge_voltage>
+ d4c:	88 e0       	ldi	r24, 0x08	; 8
+ d4e:	52 df       	rcall	.-348    	; 0xbf4 <set_precharge_period>
+	set_VCOMH(0x07);						// Set Common Pins Deselect Voltage Level as 0.86*VCC
+ d50:	87 e0       	ldi	r24, 0x07	; 7
+ d52:	60 df       	rcall	.-320    	; 0xc14 <set_VCOMH>
+ d54:	86 ea       	ldi	r24, 0xA6	; 166
+}
+
+
+void set_display_mode(uint8_t d)
+{
+	oled_write_instruction(0xA4|d);			// Set Display Mode
+ d56:	e2 de       	rcall	.-572    	; 0xb1c <oled_write_instruction>
+ d58:	89 ea       	ldi	r24, 0xA9	; 169
+ d5a:	e0 de       	rcall	.-576    	; 0xb1c <oled_write_instruction>
+}
+
+
+void set_partial_display(uint8_t a, uint8_t b, uint8_t c)
+{
+	oled_write_instruction(0xA8|a);
+ d5c:	80 e0       	ldi	r24, 0x00	; 0
+ d5e:	8e df       	rcall	.-228    	; 0xc7c <fill_RAM>
+ d60:	8f ea       	ldi	r24, 0xAF	; 175
+	set_precharge_period(0x08);				// Set Second Pre-Charge Period as 8 Clocks
+	set_VCOMH(0x07);						// Set Common Pins Deselect Voltage Level as 0.86*VCC
+	set_display_mode(0x02);					// Normal Display Mode (0x00/0x01/0x02/0x03)
+	set_partial_display(0x01,0x00,0x00);	// Disable Partial Display
+	
+	fill_RAM(CLEAR_SCREEN);					// Clear Screen
+ d62:	dc ce       	rjmp	.-584    	; 0xb1c <oled_write_instruction>
+ d64:	08 95       	ret
+
+00000d66 <spi_init>:
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  SPI Functions
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+void spi_init(void)
+{
+	SPCR = (SPI_INTERRUPT<<SPIE)
+ d66:	80 e5       	ldi	r24, 0x50	; 80
+ d68:	8c bd       	out	0x2c, r24	; 44
+		|(SPI_CLK_POLARITY<<CPOL)
+		|(SPI_CLK_PHASE<<CPHA)
+		|(SPI_CLK_RATE0<<SPR0)
+		|(SPI_CLK_RATE1<<SPR1);
+	//set interrupt, enable SPI, MSB mode, set as master, low is idle, read on leading edge, Set to speed(fosc/4) SPR0=1, SPR1=0
+	SPSR = (DBL_CLK<<SPI2X);	//set whether we want 2x speed or not (1=2x speed).
+ d6a:	1d bc       	out	0x2d, r1	; 45
+	SPDR = 0x00;		//ensure data register has nothing in it
+ d6c:	1e bc       	out	0x2e, r1	; 46
+ d6e:	08 95       	ret
+
+00000d70 <spi_send_byte>:
+//shifts out 8 bits of data
+//  uint8_t data - the data to be shifted out
+//  returns uint8_t - the data received during sending
+uint8_t spi_send_byte(uint8_t data) {
+	/* Start transmission */ // Transmission is started by writing data to the transmission register
+	SPDR = data;
+ d70:	8e bd       	out	0x2e, r24	; 46
+	/* Wait for transmission complete */
+	while(!(SPSR & (1<<SPIF)));
+ d72:	0d b4       	in	r0, 0x2d	; 45
+ d74:	07 fe       	sbrs	r0, 7
+ d76:	fd cf       	rjmp	.-6      	; 0xd72 <spi_send_byte+0x2>
+	/* Return any data that was shifted into this register upon transmission  */
+	return SPDR;
+ d78:	8e b5       	in	r24, 0x2e	; 46
+}
+ d7a:	08 95       	ret
+
+00000d7c <_exit>:
+ d7c:	f8 94       	cli
+
+00000d7e <__stop_program>:
+ d7e:	ff cf       	rjmp	.-2      	; 0xd7e <__stop_program>

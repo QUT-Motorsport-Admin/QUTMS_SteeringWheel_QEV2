@@ -17,6 +17,7 @@
 #include "OLED.h"
 #include "images.h"
 #include "input.h"
+#include "adc.h"
 
 // Vertical scroll
 #define UPWARD 0x00
@@ -124,16 +125,17 @@ void steering_wheel_init()
 	DDRD |= 0b11001000; // LEDs as outputs, DC
 	/* Set MOSI and SCK output, all others input */
 	DDRB |= 0b10100011; // CS/SS, reset
+	DDRA |= 0b00000000; // Set buttons as input
 	// TXD/MOSI_A, OLED_CS	
 	SPI_CLOCK_HIGH;
-	//spi_init(SPI_INTERRUPT_DISABLED, MSBFIRST, SPI_MASTER, SPI_MODE_0, SPI_CLOCK_RATE_0);
-	//SPI_CLOCK_HIGH;
+	adc_init();
 	spi_init();
 	OLED_init();	
 	sei(); // Enable interrupts
 	splash_screen();
 }
 
+uint16_t pot = 0;
 
 int main(void)
 {
@@ -141,19 +143,28 @@ int main(void)
 
 	while (1)
 	{
-		LED_A_ON;
-		LED_B_OFF;
-
-		oled_write_data(0b10000000);
-		//_delay_ms(500);
-		
-		oled_write_data(0b00000001);
-		_delay_ms(100);
-		
-		LED_A_OFF;
-		LED_B_ON;
-		
-		oled_write_data(0b00100000);
-		_delay_ms(500);
+		/* Button pin change testing - validated */
+		//if(!(PINA & (1 << BTN_C))) {
+			//LED_A_OFF;
+		//} else {
+			//LED_A_ON;
+		//}	
+		/* Testing and validating ADC implementation */
+		pot = adc_read(0);
+		if(pot >= 0 && pot < 250) {
+			LED_A_OFF;
+			LED_B_OFF;
+		} else if(pot >= 250 && pot < 500) {
+			LED_A_ON;
+			LED_B_OFF;
+		} else if(pot >= 500 && pot < 750) {
+			LED_A_OFF;
+			LED_B_ON;
+		} else if(pot >= 750) {
+			LED_A_ON;
+			LED_B_ON;
+		}
 	}
+
+
 }
