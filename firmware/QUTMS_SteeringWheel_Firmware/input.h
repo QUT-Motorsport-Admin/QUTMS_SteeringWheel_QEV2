@@ -1,10 +1,9 @@
 /*****************************************************************************
-* @file    Software/inc/steeringWheelGraphics.h
+* @file    firmware/QUTMS_SteeringWheel_Firmware/input.h
 * @author  Zoe Goodward
 * @version V1.0.0
-* @date    28-April-2018
-* @brief   This file declares the variables and functions that are used to
-*          produce graphics on the OLED screen
+* @date    2/08/2019 1:20:22 PM
+* @brief   This file defines the outputs and inputs of the pins of the MCU
 *****************************************************************************/
 
 #ifndef MAIN_H_

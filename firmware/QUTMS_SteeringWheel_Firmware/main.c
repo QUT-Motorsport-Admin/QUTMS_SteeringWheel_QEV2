@@ -1,5 +1,5 @@
 /*****************************************************************************
-* @file    firmware/QUTMS_SteeringWheel/main.c
+* @file    firmware/QUTMS_SteeringWheel_Firmware/main.c
 * @author  Zoe Goodward
 * @version V1.0.0
 * @date    2/08/2019 1:12:41 PM
