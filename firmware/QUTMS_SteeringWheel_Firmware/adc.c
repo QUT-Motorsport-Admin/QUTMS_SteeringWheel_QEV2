@@ -52,7 +52,7 @@ uint16_t adc_read(uint8_t adc_channel) {
     ADCSRA |= (1 << ADSC);
     while(!(ADCSRA & (1 << ADIF)));
     result = ADCL;
-    result |= ((3 & ADCH) << 8);
+    result |= ((0b00000011 & ADCH) << 0b00001000);
     ADCSRA |= (1 << ADIF);
     return result;
 }

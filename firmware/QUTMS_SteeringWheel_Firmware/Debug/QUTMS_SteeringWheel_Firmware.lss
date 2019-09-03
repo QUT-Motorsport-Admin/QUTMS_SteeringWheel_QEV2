@@ -264,7 +264,7 @@ uint16_t adc_read(uint8_t adc_channel) {
  8e8:	fd cf       	rjmp	.-6      	; 0x8e4 <adc_read+0x18>
     result = ADCL;
  8ea:	80 91 78 00 	lds	r24, 0x0078	; 0x800078 <__TEXT_REGION_LENGTH__+0x7e0078>
-    result |= ((3 & ADCH) << 8);
+    result |= ((0b00000011 & ADCH) << 0b00001000);
  8ee:	20 91 79 00 	lds	r18, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7e0079>
     ADCSRA |= (1 << ADIF);
  8f2:	ea e7       	ldi	r30, 0x7A	; 122
@@ -620,7 +620,7 @@ void steering_wheel_init()
 		//} else {
 			//LED_A_ON;
 		//}	
-
+		/* Testing and validating ADC implementation */
 		pot = adc_read(0);
  ac8:	80 e0       	ldi	r24, 0x00	; 0
  aca:	00 df       	rcall	.-512    	; 0x8cc <adc_read>

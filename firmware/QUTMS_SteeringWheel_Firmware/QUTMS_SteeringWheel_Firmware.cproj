@@ -153,6 +153,12 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="MCP2517FD.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCP2517FD.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="OLED.c">
       <SubType>compile</SubType>
     </Compile>
