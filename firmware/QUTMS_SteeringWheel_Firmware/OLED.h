@@ -107,4 +107,48 @@ void fill_RAM(uint8_t Data);
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 void set_gray_scale_table();
 
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  Display things to screen
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  Show Character (5x7)
+//
+//    database: Database
+//    asciiChar: Ascii
+//    startX: Start X Address
+//    startY: Start Y Address
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+void Show_Font57(unsigned char database, unsigned char asciiChar, unsigned char startX, unsigned char startY);
+
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  Show Character
+//
+//    database: Database
+//    asciiChar: Ascii
+//    startX: Start X Address
+//    startY: Start Y Address
+//    * Must write "0" in the end...
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+void Show_Char(unsigned char database, unsigned char asciiChar, unsigned char startX, unsigned char startY);
+
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  Show String
+//
+//    a: Database
+//    b: Start X Address
+//    c: Start Y Address
+//    * Must write "0" in the end...
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+void Show_String(unsigned char a, unsigned char *Data_Pointer, unsigned char b, unsigned char c);
+
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  Show Number
+//
+//    number: number to print
+//    startX: Start X Address
+//    startY: Start Y Address
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+void show_number(unsigned int number, unsigned char startX, unsigned char startY);
+
 #endif /* OLED_H_ */

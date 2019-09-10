@@ -19,6 +19,7 @@
 #include <avr/interrupt.h>
 #include "OLED.h"
 #include "spi.h"
+#include "font.h"
 
 void oled_write_data(uint8_t data)
 {
@@ -325,4 +326,208 @@ void set_gray_scale_table()
 	oled_write_data(0xB4);			//   Gray Scale Level 15
 
 	oled_write_instruction(0x00);			// Enable Gray Scale Table
+}
+
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  Show Character (5x7)
+//
+//    database: Database
+//    asciiChar: Ascii
+//    startX: Start X Address
+//    startY: Start Y Address
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+void Show_Font57(unsigned char a, unsigned char b, unsigned char c, unsigned char d) {
+	if(b == ' ')
+	{
+		// set character to '96' (break space)
+		b = 0x60;
+	}
+	else
+	{
+		// offset character by 32 to line it up with our character map
+		b -= 0x20;
+	}
+	
+	unsigned char *asciiSrcPointer;
+	unsigned char i, Font, MSB1, LSB1, MSB2, LSB2;
+	
+	if (a == 1) {
+		
+	}
+	
+		switch(a)
+	{
+		case 1:
+		asciiSrcPointer=(&(Ascii_2[(b-1)][0]));
+		break;
+		//case 2:
+		//asciiSrcPointer=&Ascii_2[(b-1)][0];
+		//break;
+	}
+
+	set_remap_format(0x15);
+	for(i=0;i<=1;i++)
+	{
+		MSB1= *asciiSrcPointer;
+		asciiSrcPointer++;
+		if(i == 1)
+		{
+			LSB1=0x00;
+			MSB2=0x00;
+			LSB2=0x00;
+		}
+		else
+		{
+			LSB1=*asciiSrcPointer;
+			asciiSrcPointer++;
+			MSB2=*asciiSrcPointer;
+			asciiSrcPointer++;
+			LSB2=*asciiSrcPointer;
+			asciiSrcPointer++;
+		}
+		set_column_address(Shift+c,Shift+c);
+		set_row_address(d,d+7);
+		set_write_RAM();
+		
+		Font=((MSB1&0x01)<<4)|(LSB1&0x01);
+		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
+		oled_write_data(Font);
+		Font=((MSB2&0x01)<<4)|(LSB2&0x01);
+		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
+		oled_write_data(Font);
+		
+		Font=((MSB1&0x02)<<3)|((LSB1&0x02)>>1);
+		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
+		oled_write_data(Font);
+		Font=((MSB2&0x02)<<3)|((LSB2&0x02)>>1);
+		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
+		oled_write_data(Font);
+		
+		Font=((MSB1&0x04)<<2)|((LSB1&0x04)>>2);
+		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
+		oled_write_data(Font);
+		Font=((MSB2&0x04)<<2)|((LSB2&0x04)>>2);
+		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
+		oled_write_data(Font);
+		
+		Font=((MSB1&0x08)<<1)|((LSB1&0x08)>>3);
+		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
+		oled_write_data(Font);
+		Font=((MSB2&0x08)<<1)|((LSB2&0x08)>>3);
+		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
+		oled_write_data(Font);
+		
+		Font=((MSB1&0x10)<<3)|((LSB1&0x10)>>1);
+		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
+		oled_write_data(Font);
+		Font=((MSB2&0x10)<<3)|((LSB2&0x10)>>1);
+		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
+		oled_write_data(Font);
+
+		Font=((MSB1&0x20)<<2)|((LSB1&0x20)>>2);
+		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
+		oled_write_data(Font);
+		Font=((MSB2&0x20)<<2)|((LSB2&0x20)>>2);
+		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
+		oled_write_data(Font);
+
+		Font=((MSB1&0x40)<<1)|((LSB1&0x40)>>3);
+		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
+		oled_write_data(Font);
+		Font=((MSB2&0x40)<<1)|((LSB2&0x40)>>3);
+		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
+		oled_write_data(Font);
+
+		Font=(MSB1&0x80)|((LSB1&0x80)>>4);
+		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
+		oled_write_data(Font);
+		Font=(MSB2&0x80)|((LSB2&0x80)>>4);
+		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
+		oled_write_data(Font);
+		
+		//Set_Row_Address(derp,derp+7);
+		//Set_Write_RAM();
+
+		c++;
+	}
+	set_remap_format(0x14);
+	
+}
+
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  Show Character
+//
+//    a: Database
+//    b: Start X Address
+//    c: Start Y Address
+//    * Must write "0" in the end...
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+void Show_Char(unsigned char a, unsigned char Data, unsigned char b, unsigned char c)
+{
+	//unsigned char *Src_Pointer;
+
+	//Src_Pointer=Data_Pointer;
+	Show_Font57(1,96,b,c);			// No-Break Space
+	//   Must be written first before the string start...
+
+	Show_Font57(a,Data,b,c);
+}
+
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  Show String
+//
+//    a: Database
+//    b: Start X Address
+//    c: Start Y Address
+//    * Must write "0" in the end...
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+void Show_String(unsigned char a, unsigned char *Data_Pointer, unsigned char b, unsigned char c)
+{
+	unsigned char *Src_Pointer;
+
+	Src_Pointer=Data_Pointer;
+	Show_Font57(1,96,b,c);			// No-Break Space
+	//   Must be written first before the string start...
+
+	while(1)
+	{
+		Show_Font57(a,*Src_Pointer,b,c);
+		Src_Pointer++;
+		b+=2;
+		if(*Src_Pointer == 0) break;
+	}
+}
+
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  Show Number
+//
+//    number: number to print
+//    startX: Start X Address
+//    startY: Start Y Address
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+void show_number(uint16_t number, unsigned char startX, unsigned char startY) {
+	if (number > UINT16_MAX || number < 0) {
+		return;
+	}
+	
+	if (number == 0) {
+		Show_Char(1, 16 + 32, startX, startY);
+		return;
+	}
+	
+	int numDigits = 0;
+	// uint16_t can store up to 5 digits
+	for (int i =5; i >= 0; i--) {
+		if ((number / pow(10,i)) > 1) {
+			numDigits = i+1;
+			break;
+		}
+	}
+	
+	for (int i = numDigits-1; i >= 0; i--) {
+		uint16_t digit = number / pow(10,i);
+		number -= digit * pow(10,i);
+		Show_Char(1, digit + 16 + 32, startX, startY);
+		startX+=2;
+	}
 }

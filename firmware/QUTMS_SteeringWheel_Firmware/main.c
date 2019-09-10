@@ -132,7 +132,7 @@ void steering_wheel_init()
 	spi_init();
 	OLED_init();	
 	sei(); // Enable interrupts
-	splash_screen();
+	//splash_screen();
 }
 
 uint16_t pot = 0;
@@ -150,7 +150,12 @@ int main(void)
 			//LED_A_ON;
 		//}	
 		/* Testing and validating ADC implementation */
+	
 		pot = adc_read(0);
+		fill_RAM(CLEAR_SCREEN);
+		show_number(pot, 2,2);
+		_delay_ms(50);
+
 		if(pot >= 0 && pot < 250) {
 			LED_A_OFF;
 			LED_B_OFF;
