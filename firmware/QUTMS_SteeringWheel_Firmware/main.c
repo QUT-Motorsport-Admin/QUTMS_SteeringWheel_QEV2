@@ -13,6 +13,7 @@
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 
+#include "UART.h"
 #include "spi.h"
 #include "OLED.h"
 #include "images.h"
@@ -128,6 +129,7 @@ void steering_wheel_init()
 	DDRA |= 0b00000000; // Set buttons as input
 	// TXD/MOSI_A, OLED_CS	
 	SPI_CLOCK_HIGH;
+	uart0_init(9600);
 	adc_init();
 	spi_init();
 	OLED_init();	
@@ -137,12 +139,23 @@ void steering_wheel_init()
 
 uint16_t pot = 0;
 
+uint8_t n = 123;
+uint8_t buffer[8];
+
+unsigned char TempBuffer[10];
+
+//uint32_t data = 0;
+
 int main(void)
 {
 	steering_wheel_init();
+	itoa(n, buffer, 10);
+	uint8_t chunk = 0b00001111;
 
 	while (1)
 	{
+		_delay_ms(50);
+		fill_RAM(CLEAR_SCREEN);
 		/* Button pin change testing - validated */
 		//if(!(PINA & (1 << BTN_C))) {
 			//LED_A_OFF;
@@ -151,6 +164,10 @@ int main(void)
 		//}	
 		/* Testing and validating ADC implementation */
 		pot = adc_read(0);
+		uart0_transmit(pot >> 2);
+		uart0_transmit(pot);
+		itoa(pot,TempBuffer,10);
+		Show_String(1,TempBuffer,0x28,0x05);
 		if(pot >= 0 && pot < 250) {
 			LED_A_OFF;
 			LED_B_OFF;
@@ -164,6 +181,7 @@ int main(void)
 			LED_A_ON;
 			LED_B_ON;
 		}
+		
 	}
 
 
