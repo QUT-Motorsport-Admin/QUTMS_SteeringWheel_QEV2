@@ -107,4 +107,12 @@ void fill_RAM(uint8_t Data);
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 void set_gray_scale_table();
 
+
+
+void Show_Font57(unsigned char a, unsigned char b, unsigned char c, unsigned char d);
+void Show_String(unsigned char a, unsigned char *Data_Pointer, unsigned char b, unsigned char c);
+
+
+unsigned char Ascii_2[240][5];
+
 #endif /* OLED_H_ */
