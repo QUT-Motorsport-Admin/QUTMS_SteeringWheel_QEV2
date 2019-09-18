@@ -39,8 +39,10 @@ SUBDIRS :=
 C_SRCS +=  \
 ../adc.c \
 ../main.c \
+../MCP2517FD.c \
 ../OLED.c \
-../spi.c
+../spi.c \
+../UART.c
 
 
 PREPROCESSING_SRCS += 
@@ -52,26 +54,34 @@ ASM_SRCS +=
 OBJS +=  \
 adc.o \
 main.o \
+MCP2517FD.o \
 OLED.o \
-spi.o
+spi.o \
+UART.o
 
 OBJS_AS_ARGS +=  \
 adc.o \
 main.o \
+MCP2517FD.o \
 OLED.o \
-spi.o
+spi.o \
+UART.o
 
 C_DEPS +=  \
 adc.d \
 main.d \
+MCP2517FD.d \
 OLED.d \
-spi.d
+spi.d \
+UART.d
 
 C_DEPS_AS_ARGS +=  \
 adc.d \
 main.d \
+MCP2517FD.d \
 OLED.d \
-spi.d
+spi.d \
+UART.d
 
 OUTPUT_FILE_PATH +=QUTMS_SteeringWheel_Firmware.elf
 
@@ -101,6 +111,13 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
+./MCP2517FD.o: .././MCP2517FD.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega1284p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\gcc\dev\atmega1284p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 ./OLED.o: .././OLED.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
@@ -109,6 +126,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./spi.o: .././spi.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega1284p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\gcc\dev\atmega1284p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./UART.o: .././UART.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega1284p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\gcc\dev\atmega1284p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

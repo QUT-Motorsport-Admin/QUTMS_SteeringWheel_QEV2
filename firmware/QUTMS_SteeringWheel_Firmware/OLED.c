@@ -17,27 +17,11 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+//#include <stdarg.h>
+//#include <stdio.h>
 #include "OLED.h"
 #include "spi.h"
 #include "font.h"
-
-void oled_write_data(uint8_t data)
-{
-	OLED_CS_LOW;
-	OLED_DC_DATA;
-	spi_send_byte(data);
-	OLED_DC_DATA;
-	OLED_CS_HIGH;
-}
-
-void oled_write_instruction(uint8_t data)
-{
-	OLED_DC_INSTRUCTION;
-	OLED_CS_LOW;
-	spi_send_byte(data);
-	OLED_DC_DATA;
-	OLED_CS_HIGH;
-}
 
 /*============================================================================
 Function:   oled_init()
@@ -47,487 +31,451 @@ Input   :   none
 Returns :   void
 Notes   :
 ============================================================================*/
-void OLED_init(void)
+void OLED_init ( void )
 {
-	OLED_RESET_LOW;
-	//Delay(1000);
-	_delay_ms(1000);
-	OLED_RESET_HIGH;
-	
-	set_command_lock(0x12);			// Unlock Basic Commands (0x12/0x16)
-	set_display_on_off(0x00);		// Display Off (0x00/0x01)
-	set_display_clock(0x91);		// Set Clock as 80 Frames/Sec
-	set_multiplex_ratio(0x3F);		// 1/64 Duty (0x0F~0x3F)
-	set_display_offset(0x00);		// Shift Mapping RAM Counter (0x00~0x3F)
-	set_start_line(0x00);			// Set Mapping RAM Display Start Line (0x00~0x7F)
-	set_remap_format(0x14);			// Set Horizontal Address Increment
-	//     Column Address 0 Mapped to SEG0
-	//     Disable Nibble Remap
-	//     Scan from COM[N-1] to COM0
-	//     Disable COM Split Odd Even
-	//     Enable Dual COM Line Mode
-	set_GPIO(0x00);							// Disable GPIO Pins Input
-	set_function_selection(0x01);			// Enable Internal VDD Regulator
-	set_display_enhancement_A(0xA0,0xFD);	// Enable External VSL
-	// Set Low Gray Scale Enhancement
-	set_contrast_current(0x7F);				// Set Segment Output Current
-	set_master_current(BRIGHTNESS);			// Set Scale Factor of Segment Output Current Control
-	set_gray_scale_table();					// Set Pulse Width for Gray Scale Table
-	set_phase_length(0xE2);					// Set Phase 1 as 5 Clocks & Phase 2 as 14 Clocks
-	set_display_enhancement_B(0x20);		// Enhance Driving Scheme Capability (0x00/0x20)
-	set_precharge_voltage(0x1F);			// Set Pre-Charge Voltage Level as 0.60*VCC
-	set_precharge_period(0x08);				// Set Second Pre-Charge Period as 8 Clocks
-	set_VCOMH(0x07);						// Set Common Pins Deselect Voltage Level as 0.86*VCC
-	set_display_mode(0x02);					// Normal Display Mode (0x00/0x01/0x02/0x03)
-	set_partial_display(0x01,0x00,0x00);	// Disable Partial Display
-	
-	fill_RAM(CLEAR_SCREEN);					// Clear Screen
-	
-	set_display_on_off(0x01);				// Display On (0x00/0x01)
+    OLED_RESET_LOW;
+    _delay_ms ( 1000 );
+    OLED_RESET_HIGH;
+
+    // Unlock Basic Commands (0x12/0x16)
+    OLED_set_command_lock ( OLED_COMMAND_LOCK_UNLOCK );
+
+    // Display Off (0x00/0x01)
+    OLED_set_display_off();
+
+    // Set Clock as 80 Frames/Sec
+    OLED_set_front_clock ( OLED_CLOCK_DIVIDE_RATIO_2, 0b1001 );
+
+    // 1/64 Duty (0x0F~0x3F)
+    OLED_set_MUX_ratio ( 0x3F );
+
+    // Shift Mapping RAM Counter (0x00~0x3F)
+    OLED_set_display_offset ( 0 );
+
+    // Set Mapping RAM Display Start Line (0x00~0x7F)
+    OLED_set_display_start_line ( 0 );
+
+    //	Set Horizontal Address Increment
+    //	Column Address 0 Mapped to SEG0
+    //	Disable Nibble Remap
+    //	Scan from COM[N-1] to COM0
+    //	Disable COM Split Odd Even
+    //	Enable Dual COM Line Mode
+    OLED_set_remap_and_dual_com_line ( 0, 0, 1, 1, 0, 1 );
+
+    // Disable GPIO Pins Input
+    OLED_set_GPIO ( OLED_GPIO_INPUT_DISABLED, OLED_GPIO_INPUT_DISABLED );
+
+    // Enable Internal VDD Regulator
+    OLED_set_function_selection ( OLED_FUNCTION_INTERNALVDD );
+
+    // Enable External VSL
+    OLED_set_display_enhancement_A ( OLED_ENHANCEMENT_VSL_EXTERNAL, OLED_ENHANCEMENT_GS_QUALITY_LOW );
+
+    // Set Segment Output Current
+    OLED_set_contrast_current ( 0x7F );
+
+    // Set Scale Factor of Segment Output Current Control
+    OLED_set_master_contrast_current_control ( OLED_BRIGHTNESS );
+
+    // Set Pulse Width for Gray Scale Table
+    OLED_set_gray_scale_table_oled_default();
+
+    // Set Phase 1 as 5 Clocks & Phase 2 as 14 Clocks
+    OLED_set_phase_length ( 5, 14 );
+
+    // Enhance Driving Scheme Capability (0x00/0x20)
+    OLED_set_display_enhancement_B ( OLED_ENHANCEMENT_B_RESERVED );
+
+    // Set Pre-Charge Voltage Level as 0.60*VCC
+    OLED_set_precharge_voltage ( 0x1F );
+
+    // Set Second Pre-Charge Period as 8 Clocks
+    OLED_set_second_precharge_period ( 8 );
+
+    // Set Common Pins Deselect Voltage Level as 0.86*VCC
+    OLED_set_deselect_voltage ( 0x07 );
+
+    // Normal Display Mode (0x00/0x01/0x02/0x03)
+    OLED_set_display_mode ( OLED_DISPLAYMODE_NORMAL );
+
+    // Disable Partial Display
+    OLED_set_partial_display ( 0, 0, 0 );
+
+    // Clear Screen
+    OLED_fill_ram ( 0 );
+
+    // Display On (0x00/0x01)
+    OLED_set_display_on();
 }
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 //  Instruction Setting
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-void set_column_address(uint8_t a, uint8_t b)
+void OLED_write_data ( uint8_t data )
 {
-	oled_write_instruction(0x15);			// Set Column Address
-	oled_write_data(a);						//   Default => 0x00
-	oled_write_data(b);						//   Default => 0x77
+    OLED_CS_LOW; // pull low to prepare to receive
+    OLED_DC_DATA; // we're sending data
+    spi_send_byte ( data );
+    OLED_DC_DATA;
+    OLED_CS_HIGH; // finished transmitting
 }
 
-
-void set_row_address(uint8_t a, uint8_t b)
+void OLED_write_instruction ( uint8_t data )
 {
-	oled_write_instruction(0x75);			// Set Row Address
-	oled_write_data(a);				//   Default => 0x00
-	oled_write_data(b);				//   Default => 0x7F
+    OLED_CS_LOW; // pull low to prepare to receive
+    OLED_DC_INSTRUCTION; // we're sending commands
+    spi_send_byte ( data );
+    OLED_DC_DATA;
+    OLED_CS_HIGH; // finished transmitting
 }
 
-
-void set_write_RAM()
-{
-	oled_write_instruction(0x5C);			// Enable MCU to Write into RAM
+void OLED_enable_gray_scale_table() {
+    OLED_write_instruction ( OLED_CMD_ENABLE_GRAY_SCALE );
 }
 
-
-void set_read_RAM()
-{
-	oled_write_instruction(0x5D);			// Enable MCU to Read from RAM
+void OLED_set_column_address ( uint8_t startAddress, uint8_t endAddress ) {
+    OLED_write_instruction ( OLED_CMD_ADDRESS_COLUMN );
+    OLED_write_data ( startAddress + OLED_COLUMN_SHIFT );
+    OLED_write_data ( endAddress + OLED_COLUMN_SHIFT );
 }
 
-
-void set_remap_format(uint8_t d)
-{
-	oled_write_instruction(0xA0);			// Set Re-Map / Dual COM Line Mode
-	oled_write_data(d);				//   Default => 0x40
-	//     Horizontal Address Increment
-	//     Column Address 0 Mapped to SEG0
-	//     Disable Nibble Remap
-	//     Scan from COM0 to COM[N-1]
-	//     Disable COM Split Odd Even
-	oled_write_data(0x11);			//   Default => 0x01 (Disable Dual COM Mode)
+void OLED_set_row_address ( uint8_t startAddress, uint8_t endAddress ) {
+    OLED_write_instruction ( OLED_CMD_ADDRESS_ROW );
+    OLED_write_data ( startAddress );
+    OLED_write_data ( endAddress );
 }
 
-
-void set_start_line(uint8_t d)
-{
-	oled_write_instruction(0xA1);			// Set Vertical Scroll by RAM
-	oled_write_data(d);				//   Default => 0x00
+void OLED_enable_write_RAM() {
+    OLED_write_instruction ( OLED_CMD_RAM_WRITE );
 }
 
-
-void set_display_offset(uint8_t d)
-{
-	oled_write_instruction(0xA2);			// Set Vertical Scroll by Row
-	oled_write_data(d);				//   Default => 0x00
+void OLED_enable_read_RAM() {
+    OLED_write_instruction ( OLED_CMD_RAM_READ );
 }
 
+void OLED_set_remap_and_dual_com_line ( uint8_t verticalAddressIncrement, uint8_t enableColumnAddressRemap,
+                                        uint8_t enableNibbleReamp, uint8_t scanFromCOMMultiplex,
+                                        uint8_t enableCOMSplitOddEven, uint8_t enableDualCOMMode ) {
+    uint8_t remapFlags = ( verticalAddressIncrement ) | ( enableColumnAddressRemap << 1 ) | ( enableNibbleReamp << 2 ) | ( scanFromCOMMultiplex << 4 ) | ( enableCOMSplitOddEven << 5 );
+    uint8_t comMode = 0b00000001 | ( enableDualCOMMode << 4 );
 
-void set_display_mode(uint8_t d)
-{
-	oled_write_instruction(0xA4|d);			// Set Display Mode
-	//   Default => 0xA4
-	//     0xA4 (0x00) => Entire Display Off, All Pixels Turn Off
-	//     0xA5 (0x01) => Entire Display On, All Pixels Turn On at GS Level 15
-	//     0xA6 (0x02) => Normal Display
-	//     0xA7 (0x03) => Inverse Display
+    OLED_write_instruction ( OLED_CMD_REMAP_AND_DUAL_COM_LINE );
+    OLED_write_data ( remapFlags );
+    OLED_write_data ( comMode );
+
 }
 
-
-void set_partial_display(uint8_t a, uint8_t b, uint8_t c)
-{
-	oled_write_instruction(0xA8|a);
-	// Default => 0x8F
-	//   Select Internal Booster at Display On
-	if(a == 0x00)
-	{
-		oled_write_data(b);
-		oled_write_data(c);
-	}
+void OLED_set_display_start_line ( uint8_t startLine ) {
+    // screen height is 64, so startLine can be between 0-63, so lop off last 2 bits
+    //startLine &= ~( (1 << 6) | (1 << 7));
+    OLED_write_instruction ( OLED_CMD_DISPLAY_START_LINE );
+    OLED_write_data ( startLine );
 }
 
-
-void set_function_selection(uint8_t d)
-{
-	oled_write_instruction(0xAB);			// Function Selection
-	oled_write_data(d);				//   Default => 0x01
-	//     Enable Internal VDD Regulator
+void OLED_set_display_offset ( uint8_t verticalScrollOffset ) {
+    // screen height is 64, so verticalScrollOffset can be between 0-63, so lop off last 2 bits
+    //verticalScrollOffset &= ~( (1 << 6) | (1 << 7));
+    OLED_write_instruction ( OLED_CMD_DISPLAY_START_LINE );
+    OLED_write_data ( verticalScrollOffset );
 }
 
-
-void set_display_on_off(uint8_t d)
-{
-	oled_write_instruction(0xAE|d);			// Set Display On/Off
-	//   Default => 0xAE
-	//     0xAE (0x00) => Display Off (Sleep Mode On)
-	//     0xAF (0x01) => Display On (Sleep Mode Off)
+void OLED_set_display_mode ( OLED_DISPLAY_MODES displayMode ) {
+    OLED_write_instruction ( displayMode );
+    //OLED_write_data((uint8_t)displayMode);
 }
 
+void OLED_set_partial_display ( uint8_t enablePartial, uint8_t startRow, uint8_t endRow ) {
+    if ( enablePartial == 0 ) {
+        OLED_write_instruction ( OLED_CMD_PARTIAL_DISPLAY_EXIT );
+    } else {
+        // screen height is 64, so make sure startRow and endRow are not
+        // bigger than 64
+        //startRow &= ~( (1 << 6) | (1 << 7));
+        //endRow &= ~( (1 << 6) | (1 << 7));
+        if ( startRow > endRow ) {
+            return;
+        }
 
-void set_phase_length(uint8_t d)
-{
-	oled_write_instruction(0xB1);			// Phase 1 (Reset) & Phase 2 (Pre-Charge) Period Adjustment
-	oled_write_data(d);				//   Default => 0x74 (7 Display Clocks [Phase 2] / 9 Display Clocks [Phase 1])
-	//     D[3:0] => Phase 1 Period in 5~31 Display Clocks
-	//     D[7:4] => Phase 2 Period in 3~15 Display Clocks
+        OLED_write_instruction ( OLED_CMD_PARTIAL_DISPLAY_ENABLE );
+        OLED_write_data ( startRow );
+        OLED_write_data ( endRow );
+    }
 }
 
+void OLED_set_function_selection ( OLED_FUNCTION function ) {
+    uint8_t flags = function;
 
-void set_display_clock(uint8_t d)
-{
-	oled_write_instruction(0xB3);			// Set Display Clock Divider / Oscillator Frequency
-	oled_write_data(d);				//   Default => 0xD0
-	//     A[3:0] => Display Clock Divider
-	//     A[7:4] => Oscillator Frequency
+    OLED_write_instruction ( OLED_CMD_FUNCTION_SELECTION );
+    OLED_write_data ( flags );
 }
 
-
-void set_display_enhancement_A(uint8_t a, uint8_t b)
-{
-	oled_write_instruction(0xB4);			// Display Enhancement
-	oled_write_data(0xA0|a);			//   Default => 0xA2
-	//     0xA0 (0x00) => Enable External VSL
-	//     0xA2 (0x02) => Enable Internal VSL (Kept VSL Pin N.C.)
-	oled_write_data(0x05|b);			//   Default => 0xB5
-	//     0xB5 (0xB0) => Normal
-	//     0xFD (0xF8) => Enhance Low Gray Scale Display Quality
+void OLED_set_display_off() {
+    OLED_write_instruction ( OLED_CMD_DISPLAY_OFF );
 }
 
-
-void set_GPIO(uint8_t d)
-{
-	oled_write_instruction(0xB5);			// General Purpose IO
-	oled_write_data(d);				//   Default => 0x0A (GPIO Pins output Low Level.)
+void OLED_set_display_on() {
+    OLED_write_instruction ( OLED_CMD_DISPLAY_ON );
 }
 
+void OLED_set_phase_length ( uint8_t phase1Period, uint8_t phase2Period ) {
+    if ( phase1Period < 5 ) {
+        phase1Period = 5;
+    } else if ( phase1Period > 31 ) {
+        phase1Period = 31;
+    }
 
-void set_precharge_period(uint8_t d)
-{
-	oled_write_instruction(0xB6);			// Set Second Pre-Charge Period
-	oled_write_data(d);				//   Default => 0x08 (8 Display Clocks)
+    phase1Period = phase1Period / 2;
+
+    if ( phase2Period < 3 ) {
+        phase2Period = 3;
+    } else if ( phase2Period > 15 ) {
+        phase2Period = 15;
+    }
+
+    phase2Period = phase2Period / 2;
+
+    uint8_t flags = ( phase1Period << 0 ) | ( phase2Period << 4 );
+
+    OLED_write_instruction ( OLED_CMD_PHASE_LENGTH );
+    OLED_write_data ( flags );
 }
 
+void OLED_set_front_clock ( OLED_CLOCK_DIVIDE_RATIO divideRatio, uint8_t frequency ) {
+    uint8_t flags = ( divideRatio << 0 ) | ( frequency << 4 );
 
-void set_precharge_voltage(uint8_t d)
-{
-	oled_write_instruction(0xBB);			// Set Pre-Charge Voltage Level
-	oled_write_data(d);				//   Default => 0x17 (0.50*VCC)
+    OLED_write_instruction ( OLED_CMD_FRONT_CLOCK );
+    OLED_write_data ( flags );
 }
 
+void OLED_set_display_enhancement_A ( OLED_ENHANCEMENT_VSL vsl, OLED_ENHANCEMENT_GS_QUALITY gsQuality ) {
+    uint8_t vslFlag = 0b10100000 | vsl;
+    uint8_t gsFlag = 0b00000101 | ( gsQuality << 3 );
 
-void set_VCOMH(uint8_t d)
-{
-	oled_write_instruction(0xBE);			// Set COM Deselect Voltage Level
-	oled_write_data(d);				//   Default => 0x04 (0.80*VCC)
+    OLED_write_instruction ( OLED_CMD_DISPLAY_ENHANCEMENT_A );
+    OLED_write_data ( vslFlag );
+    OLED_write_data ( gsFlag );
 }
 
+void OLED_set_GPIO ( OLED_GPIO_SETTINGS gpio1Settings, OLED_GPIO_SETTINGS gpio2Settings ) {
+    uint8_t flags = ( gpio1Settings << 0 ) | ( gpio2Settings << 2 );
 
-void set_contrast_current(uint8_t d)
-{
-	oled_write_instruction(0xC1);			// Set Contrast Current
-	oled_write_data(d);				//   Default => 0x7F
+    OLED_write_instruction ( OLED_CMD_GPIO );
+    OLED_write_data ( flags );
 }
 
+void OLED_set_second_precharge_period ( uint8_t period ) {
+    if ( period < 0 ) {
+        period = 0;
+    } else if ( period > 15 ) {
+        period = 15;
+    }
 
-void set_master_current(uint8_t d)
-{
-	oled_write_instruction(0xC7);			// Master Contrast Current Control
-	oled_write_data(d);				//   Default => 0x0f (Maximum)
+    OLED_write_instruction ( OLED_CMD_PRECHARGE_PERIOD );
+    OLED_write_data ( period );
 }
 
-
-void set_multiplex_ratio(uint8_t d)
-{
-	oled_write_instruction(0xCA);			// Set Multiplex Ratio
-	oled_write_data(d);				//   Default => 0x7F (1/128 Duty)
+void OLED_set_gray_scale_table_oled_default() {
+    OLED_set_gray_scale_table ( 0x0C, 0x18, 0x24, 0x30,
+                                0x3C, 0x48, 0x54, 0x60,
+                                0x6C, 0x78, 0x84, 0x90,
+                                0x9C, 0xA8, 0xB4 );
 }
 
+void OLED_set_gray_scale_table ( uint8_t gs1, uint8_t gs2, uint8_t gs3, uint8_t gs4, uint8_t gs5,
+                                 uint8_t gs6, uint8_t gs7, uint8_t gs8, uint8_t gs9, uint8_t gs10,
+                                 uint8_t gs11, uint8_t gs12, uint8_t gs13, uint8_t gs14, uint8_t gs15 ) {
+    OLED_write_instruction ( OLED_CMD_GRAY_SCALE_TABLE );
+    OLED_write_data ( gs1 );			//   Gray Scale Level 1
+    OLED_write_data ( gs2 );			//   Gray Scale Level 2
+    OLED_write_data ( gs3 );			//   Gray Scale Level 3
+    OLED_write_data ( gs4 );			//   Gray Scale Level 4
+    OLED_write_data ( gs5 );			//   Gray Scale Level 5
+    OLED_write_data ( gs6 );			//   Gray Scale Level 6
+    OLED_write_data ( gs7 );			//   Gray Scale Level 7
+    OLED_write_data ( gs8 );			//   Gray Scale Level 8
+    OLED_write_data ( gs9 );			//   Gray Scale Level 9
+    OLED_write_data ( gs10 );			//   Gray Scale Level 10
+    OLED_write_data ( gs11 );			//   Gray Scale Level 11
+    OLED_write_data ( gs12 );			//   Gray Scale Level 12
+    OLED_write_data ( gs13 );			//   Gray Scale Level 13
+    OLED_write_data ( gs14 );			//   Gray Scale Level 14
+    OLED_write_data ( gs15 );			//   Gray Scale Level 15
 
-void set_display_enhancement_B(uint8_t d)
-{
-	oled_write_instruction(0xD1);			// Display Enhancement
-	oled_write_data(0x82|d);			//   Default => 0xA2
-	//     0x82 (0x00) => Reserved
-	//     0xA2 (0x20) => Normal
-	oled_write_data(0x20);
+    OLED_enable_gray_scale_table();
 }
 
+void OLED_set_gray_scale_table_default() {
+    OLED_write_instruction ( OLED_CMD_GRAY_SCALE_DEFAULT );
+}
 
-void set_command_lock(uint8_t d)
-{
-	oled_write_instruction(0xFD);			// Set Command Lock
-	oled_write_data(0x12|d);			//   Default => 0x12
-	//     0x12 => Driver IC interface is unlocked from entering command.
-	//     0x16 => All Commands are locked except 0xFD.
+void OLED_set_precharge_voltage ( uint8_t voltage ) {
+    OLED_write_instruction ( OLED_CMD_PRECHARGE_VOLTAGE );
+    OLED_write_data ( voltage );
+}
+
+void OLED_set_deselect_voltage ( uint8_t voltage ) {
+    OLED_write_instruction ( OLED_CMD_VOLTAGE_COM );
+    OLED_write_data ( voltage );
+}
+
+void OLED_set_contrast_current ( uint8_t contrast ) {
+    OLED_write_instruction ( OLED_CMD_CONTRAST_CURRENT );
+    OLED_write_data ( contrast );
+}
+
+void OLED_set_master_contrast_current_control ( uint8_t control ) {
+    OLED_write_instruction ( OLED_CMD_MASTER_CONTRAST );
+    OLED_write_data ( control );
+}
+
+void OLED_set_MUX_ratio ( uint8_t ratio ) {
+    OLED_write_instruction ( OLED_CMD_MUX_RATIO );
+    OLED_write_data ( ratio );
+}
+
+void OLED_set_display_enhancement_B ( OLED_ENHANCEMENT_B enhancement ) {
+    uint8_t flags = 0b10000010 | ( enhancement << 4 );
+    OLED_write_instruction ( OLED_CMD_DISPLAY_ENHANCEMENT_B );
+    OLED_write_data ( flags );
+    OLED_write_data ( 0x20 ); // ???? from the tech specs lol
+}
+
+void OLED_set_command_lock ( uint8_t lock ) {
+    uint8_t flags = 0b00010010 | ( lock << 2 );
+
+    OLED_write_instruction ( OLED_CMD_COMMAND_LOCK );
+    OLED_write_data ( flags );
+}
+
+void OLED_fill_ram ( uint8_t data ) {
+    OLED_set_column_address ( 0, OLED_COLUMNS );
+    OLED_set_row_address ( 0, OLED_ROWS );
+    OLED_enable_write_RAM();
+
+    for ( uint8_t i = 0; i < OLED_ROWS; i++ ) {
+        for ( uint8_t j = 0; j < OLED_COLUMNS; j++ ) {
+            OLED_write_data ( data );
+            OLED_write_data ( data );
+        }
+    }
 }
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-//  Show Regular Pattern (Full Screen)
+//  Wrapper Functions
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-void fill_RAM(uint8_t Data)
-{
-	uint8_t i,j;
+void Present_Buffer() {
+    for ( uint8_t i = 0; i < OLED_ROWS; i++ ) {
+        for ( uint8_t j = 0; j < OLED_COLUMNS; j++ ) {
+            int index = i * OLED_ROWS + j;
 
-	set_column_address(0x00,0x77);
-	set_row_address(0x00,0x7F);
-	set_write_RAM();
+            int flagIndex = index / 8;
+            int flagPos = index % 8;
 
-	for(i=0;i<128;i++)
-	{
-		for(j=0;j<120;j++)
-		{
-			oled_write_data(Data);
-			//Write_Data(Data);
-		}
-	}
+            // has this part of the screen changed?
+            //if ( ( oledBufferUpdated[flagIndex] >> flagPos ) == 1 ) {
+            // set bit flag back to zero since we are showing it
+            //    oledBufferUpdated[flagIndex] &= ~ ( 1 << flagPos );
+
+            // currentData is in format 0b d3 d2 d1 d0
+            //							0b 00 00 00 00
+            uint8_t currentData = oledBuffer[index];
+            // extract the 2 bits
+            uint8_t d0 = ( currentData & 0b00000011 ) >> 0;
+            uint8_t d1 = ( currentData & 0b00001100 ) >> 2;
+            uint8_t d2 = ( currentData & 0b00110000 ) >> 4;
+            uint8_t d3 = ( currentData & 0b11000000 ) >> 6;
+
+            // now dn is 4 bits
+            d0 |= d0 << 2;
+            d1 |= d1 << 2;
+            d2 |= d2 << 2;
+            d3 |= d3 << 2;
+
+            // data0 is now d0d0d1d1
+            // data1 is now d2d2d3d3
+            uint8_t data0 = ( d0 << 4 ) | d1;
+            uint8_t data1 = ( d2 << 4 ) | d3;
+
+            OLED_set_column_address ( j, 0x77 );
+            OLED_set_row_address ( i, 0x7F );
+
+            OLED_enable_write_RAM();
+            OLED_write_data ( data0 );
+            OLED_write_data ( data1 );
+
+            //}
+        }
+    }
 }
 
-//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-//  Gray Scale Table Setting (Full Screen)
-//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-void set_gray_scale_table()
-{
-	oled_write_instruction(0xB8);			// Set Gray Scale Table
-	oled_write_data(0x0C);			//   Gray Scale Level 1
-	oled_write_data(0x18);			//   Gray Scale Level 2
-	oled_write_data(0x24);			//   Gray Scale Level 3
-	oled_write_data(0x30);			//   Gray Scale Level 4
-	oled_write_data(0x3C);			//   Gray Scale Level 5
-	oled_write_data(0x48);			//   Gray Scale Level 6
-	oled_write_data(0x54);			//   Gray Scale Level 7
-	oled_write_data(0x60);			//   Gray Scale Level 8
-	oled_write_data(0x6C);			//   Gray Scale Level 9
-	oled_write_data(0x78);			//   Gray Scale Level 10
-	oled_write_data(0x84);			//   Gray Scale Level 11
-	oled_write_data(0x90);			//   Gray Scale Level 12
-	oled_write_data(0x9C);			//   Gray Scale Level 13
-	oled_write_data(0xA8);			//   Gray Scale Level 14
-	oled_write_data(0xB4);			//   Gray Scale Level 15
+void Show_Pixel ( uint16_t x, uint16_t y, uint8_t value ) {
+    int col = x / 4;
+    int colPos = x % 4;
+    int row = y;
+    int bufferIndex = row * OLED_ROWS + col;
+    int flagIndex = bufferIndex / 8;
+    int flagPos = bufferIndex % 8;
 
-	oled_write_instruction(0x00);			// Enable Gray Scale Table
+    // data should be 0 or 1
+    // eg format 0b0000000v
+    uint8_t data = ( value == 0 ) ? 0 : 1;
+
+    // make data in the format 0b000000vv
+    data |= data << 1;
+    uint8_t mask = 0b00000011;
+
+    // shift data across so it's in the correct position for this pixel
+    // eg 0b00vv0000
+    data = data << colPos;
+    mask = ~(mask << colPos);
+
+    // update the buffer with this pixel data
+    // clear existing data in this position
+    oledBuffer[bufferIndex] &= mask;
+    // add the new data
+    oledBuffer[bufferIndex] |= data;
+
+    // flag this section as being updated
+    oledBufferUpdated[flagIndex] |= ( 1 << flagPos );
 }
 
-//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-//  Show Character (5x7)
-//
-//    database: Database
-//    asciiChar: Ascii
-//    startX: Start X Address
-//    startY: Start Y Address
-//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-void Show_Font57(unsigned char a, unsigned char b, unsigned char c, unsigned char d) {
-	if(b == ' ')
-	{
-		// set character to '96' (break space)
-		b = 0x60;
-	}
-	else
-	{
-		// offset character by 32 to line it up with our character map
-		b -= 0x20;
-	}
-	
-	unsigned char *asciiSrcPointer;
-	unsigned char i, Font, MSB1, LSB1, MSB2, LSB2;
-	
-	if (a == 1) {
-		
-	}
-	
-	switch(a)
-	{
-		case 1:
-		asciiSrcPointer=(&(Ascii_2[(b-1)][0]));
-		break;
-		//case 2:
-		//asciiSrcPointer=&Ascii_2[(b-1)][0];
-		//break;
-	}
+void Show_Font57 ( uint16_t x, uint16_t y, char value ) {
+    if ( value == ' ' ) {
+        // set character to '96' (break space)
+        value = 0x60;
+    } else {
+        // offset character by 32 to line it up with our character map
+        value -= 0x20;
+    }
 
-	set_remap_format(0x15);
-	for(i=0;i<=1;i++)
-	{
-		MSB1= *asciiSrcPointer;
-		asciiSrcPointer++;
-		if(i == 1)
-		{
-			LSB1=0x00;
-			MSB2=0x00;
-			LSB2=0x00;
-		}
-		else
-		{
-			LSB1=*asciiSrcPointer;
-			asciiSrcPointer++;
-			MSB2=*asciiSrcPointer;
-			asciiSrcPointer++;
-			LSB2=*asciiSrcPointer;
-			asciiSrcPointer++;
-		}
-		set_column_address(Shift+c,Shift+c);
-		set_row_address(d,d+7);
-		set_write_RAM();
-		
-		Font=((MSB1&0x01)<<4)|(LSB1&0x01);
-		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
-		oled_write_data(Font);
-		Font=((MSB2&0x01)<<4)|(LSB2&0x01);
-		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
-		oled_write_data(Font);
-		
-		Font=((MSB1&0x02)<<3)|((LSB1&0x02)>>1);
-		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
-		oled_write_data(Font);
-		Font=((MSB2&0x02)<<3)|((LSB2&0x02)>>1);
-		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
-		oled_write_data(Font);
-		
-		Font=((MSB1&0x04)<<2)|((LSB1&0x04)>>2);
-		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
-		oled_write_data(Font);
-		Font=((MSB2&0x04)<<2)|((LSB2&0x04)>>2);
-		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
-		oled_write_data(Font);
-		
-		Font=((MSB1&0x08)<<1)|((LSB1&0x08)>>3);
-		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
-		oled_write_data(Font);
-		Font=((MSB2&0x08)<<1)|((LSB2&0x08)>>3);
-		Font=Font|(Font<<1)|(Font<<2)|(Font<<3);
-		oled_write_data(Font);
-		
-		Font=((MSB1&0x10)<<3)|((LSB1&0x10)>>1);
-		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
-		oled_write_data(Font);
-		Font=((MSB2&0x10)<<3)|((LSB2&0x10)>>1);
-		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
-		oled_write_data(Font);
+    // pointer to first element of binary ascii representation
+    unsigned char* asciiSrcPointer = Ascii_2[ ( value - 1 )];
+    //0001 0101
+    //OLED_set_remap_and_dual_com_line(1, 0, 1, 1, 0, 1);
 
-		Font=((MSB1&0x20)<<2)|((LSB1&0x20)>>2);
-		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
-		oled_write_data(Font);
-		Font=((MSB2&0x20)<<2)|((LSB2&0x20)>>2);
-		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
-		oled_write_data(Font);
-
-		Font=((MSB1&0x40)<<1)|((LSB1&0x40)>>3);
-		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
-		oled_write_data(Font);
-		Font=((MSB2&0x40)<<1)|((LSB2&0x40)>>3);
-		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
-		oled_write_data(Font);
-
-		Font=(MSB1&0x80)|((LSB1&0x80)>>4);
-		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
-		oled_write_data(Font);
-		Font=(MSB2&0x80)|((LSB2&0x80)>>4);
-		Font=Font|(Font>>1)|(Font>>2)|(Font>>3);
-		oled_write_data(Font);
-		
-		//Set_Row_Address(derp,derp+7);
-		//Set_Write_RAM();
-
-		c++;
-	}
-	set_remap_format(0x14);
-	
+    // loop through each bit
+    for ( uint8_t i = 0; i < 8; i++ ) {
+        // loop through ascii binary data
+        for ( uint8_t j = 0; j < 5; j++ ) {
+            uint8_t bit = (( asciiSrcPointer[j] >> i ) & 1) == 0 ? 0 : 1;
+            Show_Pixel ( x + j, y + i, bit );
+        }
+    }
 }
 
-//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-//  Show Character
-//
-//    a: Database
-//    b: Start X Address
-//    c: Start Y Address
-//    * Must write "0" in the end...
-//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-void Show_Char(unsigned char a, unsigned char Data, unsigned char b, unsigned char c)
-{
-	//unsigned char *Src_Pointer;
-
-	//Src_Pointer=Data_Pointer;
-	Show_Font57(1,96,b,c);			// No-Break Space
-	//   Must be written first before the string start...
-
-	Show_Font57(a,Data,b,c);
+void Show_Char ( uint16_t x, uint16_t y, char value ) {
+    Show_Font57 ( x, y, value );
 }
+void Show_String ( uint16_t x, uint16_t y, char* value ) {
+    const uint16_t characterWidth = 6;
 
-//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-//  Show String
-//
-//    a: Database
-//    b: Start X Address
-//    c: Start Y Address
-//    * Must write "0" in the end...
-//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-void Show_String(unsigned char a, unsigned char *Data_Pointer, unsigned char b, unsigned char c)
-{
-	unsigned char *Src_Pointer;
+    int index = 0;
 
-	Src_Pointer=Data_Pointer;
-	Show_Font57(1,96,b,c);			// No-Break Space
-	//   Must be written first before the string start...
-
-	while(1)
-	{
-		Show_Font57(a,*Src_Pointer,b,c);
-		Src_Pointer++;
-		b+=2;
-		if(*Src_Pointer == 0) break;
-	}
-}
-
-//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-//  Show Number
-//
-//    number: number to print
-//    startX: Start X Address
-//    startY: Start Y Address
-//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-void show_number(uint16_t number, unsigned char startX, unsigned char startY) {
-	if (number > UINT16_MAX || number < 0) {
-		return;
-	}
-	
-	if (number == 0) {
-		Show_Char(1, 16 + 32, startX, startY);
-		return;
-	}
-	
-	int numDigits = 0;
-	// uint16_t can store up to 5 digits
-	for (int i =5; i >= 0; i--) {
-		if ((number / pow(10,i)) > 1) {
-			numDigits = i+1;
-			break;
-		}
-	}
-	
-	for (int i = numDigits-1; i >= 0; i--) {
-		uint16_t digit = number / pow(10,i);
-		number -= digit * pow(10,i);
-		Show_Char(1, digit + 16 + 32, startX, startY);
-		startX+=2;
-	}
+    // loop through value until we get a NULL (c has NULL terminated strings)
+    while ( value[index] != 0 ) {
+        Show_Char ( x, y, value[index] );
+        x += characterWidth;
+        index++;
+    }
 }
