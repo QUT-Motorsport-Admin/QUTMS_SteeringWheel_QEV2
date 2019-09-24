@@ -17,8 +17,9 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
-//#include <stdarg.h>
-//#include <stdio.h>
+#include <avr/pgmspace.h>
+#include <stdarg.h>
+#include <stdio.h>
 #include "OLED.h"
 #include "spi.h"
 #include "font.h"
@@ -373,40 +374,51 @@ void Present_Buffer() {
             int flagPos = index % 8;
 
             // has this part of the screen changed?
-            //if ( ( oledBufferUpdated[flagIndex] >> flagPos ) == 1 ) {
-            // set bit flag back to zero since we are showing it
-            //    oledBufferUpdated[flagIndex] &= ~ ( 1 << flagPos );
+            if ( ( (oledBufferUpdated[flagIndex] >> flagPos) & 1 ) == 1 ) {
+                // set bit flag back to zero since we are showing it
+                oledBufferUpdated[flagIndex] &= ~ ( 1 << flagPos );
 
-            // currentData is in format 0b d3 d2 d1 d0
-            //							0b 00 00 00 00
-            uint8_t currentData = oledBuffer[index];
-            // extract the 2 bits
-            uint8_t d0 = ( currentData & 0b00000011 ) >> 0;
-            uint8_t d1 = ( currentData & 0b00001100 ) >> 2;
-            uint8_t d2 = ( currentData & 0b00110000 ) >> 4;
-            uint8_t d3 = ( currentData & 0b11000000 ) >> 6;
+                // currentData is in format 0b d3 d2 d1 d0
+                //							0b 00 00 00 00
+                uint8_t currentData = oledBuffer[index];
+                // extract the 2 bits
+                uint8_t d0 = ( currentData & 0b00000011 ) >> 0;
+                uint8_t d1 = ( currentData & 0b00001100 ) >> 2;
+                uint8_t d2 = ( currentData & 0b00110000 ) >> 4;
+                uint8_t d3 = ( currentData & 0b11000000 ) >> 6;
 
-            // now dn is 4 bits
-            d0 |= d0 << 2;
-            d1 |= d1 << 2;
-            d2 |= d2 << 2;
-            d3 |= d3 << 2;
+                // now dn is 4 bits
+                d0 |= d0 << 2;
+                d1 |= d1 << 2;
+                d2 |= d2 << 2;
+                d3 |= d3 << 2;
 
-            // data0 is now d0d0d1d1
-            // data1 is now d2d2d3d3
-            uint8_t data0 = ( d0 << 4 ) | d1;
-            uint8_t data1 = ( d2 << 4 ) | d3;
+                // data0 is now d0d0d1d1
+                // data1 is now d2d2d3d3
+                uint8_t data0 = ( d0 << 4 ) | d1;
+                uint8_t data1 = ( d2 << 4 ) | d3;
 
-            OLED_set_column_address ( j, 0x77 );
-            OLED_set_row_address ( i, 0x7F );
+                OLED_set_column_address ( j, 0x77 );
+                OLED_set_row_address ( i, 0x7F );
 
-            OLED_enable_write_RAM();
-            OLED_write_data ( data0 );
-            OLED_write_data ( data1 );
+                OLED_enable_write_RAM();
+                OLED_write_data ( data0 );
+                OLED_write_data ( data1 );
 
-            //}
+            }
         }
     }
+}
+
+void Clear_Buffer() {
+    for ( uint8_t i = 0; i < OLED_ROWS; i++ ) {
+        for ( uint8_t j = 0; j < OLED_COLUMNS; j++ ) {
+            int index = i * OLED_ROWS + j;
+            oledBuffer[index] = 0;
+        }
+    }
+
+    OLED_fill_ram(0);
 }
 
 void Show_Pixel ( uint16_t x, uint16_t y, uint8_t value ) {
@@ -427,17 +439,22 @@ void Show_Pixel ( uint16_t x, uint16_t y, uint8_t value ) {
 
     // shift data across so it's in the correct position for this pixel
     // eg 0b00vv0000
-    data = data << colPos;
-    mask = ~(mask << colPos);
+    data = data << (colPos * 2);
+    mask = ~(mask << (colPos * 2));
 
-    // update the buffer with this pixel data
-    // clear existing data in this position
-    oledBuffer[bufferIndex] &= mask;
-    // add the new data
-    oledBuffer[bufferIndex] |= data;
+    uint8_t currentData = oledBuffer[bufferIndex] & (mask << (colPos * 2));
 
-    // flag this section as being updated
-    oledBufferUpdated[flagIndex] |= ( 1 << flagPos );
+    if (currentData != data) {
+
+        // update the buffer with this pixel data
+        // clear existing data in this position
+        oledBuffer[bufferIndex] &= mask;
+        // add the new data
+        oledBuffer[bufferIndex] |= data;
+
+        // flag this section as being updated
+        oledBufferUpdated[flagIndex] |= ( 1 << flagPos );
+    }
 }
 
 void Show_Font57 ( uint16_t x, uint16_t y, char value ) {
@@ -478,4 +495,29 @@ void Show_String ( uint16_t x, uint16_t y, char* value ) {
         x += characterWidth;
         index++;
     }
+}
+
+void Show_Formatted(uint16_t x, uint16_t y, char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    char buffer[100];
+    vsnprintf(buffer, sizeof(buffer), format, args);
+    Show_String(x, y, buffer);
+}
+
+void display_picture(const unsigned char pic[]) {
+    uint8_t i, j, pix;
+
+    for (i = 0; i < 64; i++) {     // row
+        for (j = 0; j < 32; j++) { // column
+            for (pix = 0; pix < 8; pix++) {
+                uint8_t bytePosition = 7 - pix;
+                uint8_t pixel = (pgm_read_byte ( &pic[i * 32 + j] ) & (1 << bytePosition)) >> bytePosition;
+                Show_Pixel((8 * j) + pix, i, pixel);
+            }
+
+            //data_processing(j, i, pic[i * 32 + j]);
+        }
+    }
+    return;
 }

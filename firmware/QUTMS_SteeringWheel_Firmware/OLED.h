@@ -60,58 +60,58 @@
 #define OLED_CMD_COMMAND_LOCK 0xFD
 
 typedef enum OLED_DISPLAY_MODES {
-	OLED_DISPLAYMODE_OFF = 0xA4,
-	OLED_DISPLAYMODE_ON = 0xA5,
-	OLED_DISPLAYMODE_NORMAL = 0xA6,
-	OLED_DISPLAYMODE_INVERSE = 0xA7,
+    OLED_DISPLAYMODE_OFF = 0xA4,
+    OLED_DISPLAYMODE_ON = 0xA5,
+    OLED_DISPLAYMODE_NORMAL = 0xA6,
+    OLED_DISPLAYMODE_INVERSE = 0xA7,
 } OLED_DISPLAY_MODES;
 
 typedef enum OLED_FUNCTION {
-	OLED_FUNCTION_EXTERNALVDD = 0,
-	OLED_FUNCTION_INTERNALVDD = 1
+    OLED_FUNCTION_EXTERNALVDD = 0,
+    OLED_FUNCTION_INTERNALVDD = 1
 } OLED_FUNCTION;
 
 typedef enum OLED_ENHANCEMENT_VSL {
-	OLED_ENHANCEMENT_VSL_EXTERNAL = 0b00,
-	OLED_ENHANCEMENT_VSL_INTERNAL = 0b10
+    OLED_ENHANCEMENT_VSL_EXTERNAL = 0b00,
+    OLED_ENHANCEMENT_VSL_INTERNAL = 0b10
 } OLED_ENHANCEMENT_VSL;
 
 typedef enum OLED_ENHANCEMENT_GS_QUALITY {
-	OLED_ENHANCEMENT_GS_QUALITY_LOW = 0b11111,
-	OLED_ENHANCEMENT_GS_QUALITY_NORMAL = 0b10110
+    OLED_ENHANCEMENT_GS_QUALITY_LOW = 0b11111,
+    OLED_ENHANCEMENT_GS_QUALITY_NORMAL = 0b10110
 } OLED_ENHANCEMENT_GS_QUALITY;
 
 typedef enum OLED_GPIO_SETTINGS {
-	OLED_GPIO_INPUT_DISABLED = 0b00,
-	OLED_GPIO_INPUT_ENABLED = 0b01,
-	OLED_GPIO_OUTPUT_LOW = 0b10,
-	OLED_GPIO_OUTPUT_HIGH = 0b11,
+    OLED_GPIO_INPUT_DISABLED = 0b00,
+    OLED_GPIO_INPUT_ENABLED = 0b01,
+    OLED_GPIO_OUTPUT_LOW = 0b10,
+    OLED_GPIO_OUTPUT_HIGH = 0b11,
 } OLED_GPIO_SETTINGS;
 
 
 
 typedef enum OLED_CLOCK_DIVIDE_RATIO {
-	OLED_CLOCK_DIVIDE_RATIO_1 = 0b0000,
-	OLED_CLOCK_DIVIDE_RATIO_2 = 0b0001,
-	OLED_CLOCK_DIVIDE_RATIO_4 = 0b0010,
-	OLED_CLOCK_DIVIDE_RATIO_8 = 0b0011,
-	OLED_CLOCK_DIVIDE_RATIO_16 = 0b0100,
-	OLED_CLOCK_DIVIDE_RATIO_32= 0b0101,
-	OLED_CLOCK_DIVIDE_RATIO_64 = 0b0110,
-	OLED_CLOCK_DIVIDE_RATIO_128 = 0b0111,
-	OLED_CLOCK_DIVIDE_RATIO_256 = 0b1000,
-	OLED_CLOCK_DIVIDE_RATIO_512 = 0b1001,
-	OLED_CLOCK_DIVIDE_RATIO_1024 = 0b1010,
+    OLED_CLOCK_DIVIDE_RATIO_1 = 0b0000,
+    OLED_CLOCK_DIVIDE_RATIO_2 = 0b0001,
+    OLED_CLOCK_DIVIDE_RATIO_4 = 0b0010,
+    OLED_CLOCK_DIVIDE_RATIO_8 = 0b0011,
+    OLED_CLOCK_DIVIDE_RATIO_16 = 0b0100,
+    OLED_CLOCK_DIVIDE_RATIO_32 = 0b0101,
+    OLED_CLOCK_DIVIDE_RATIO_64 = 0b0110,
+    OLED_CLOCK_DIVIDE_RATIO_128 = 0b0111,
+    OLED_CLOCK_DIVIDE_RATIO_256 = 0b1000,
+    OLED_CLOCK_DIVIDE_RATIO_512 = 0b1001,
+    OLED_CLOCK_DIVIDE_RATIO_1024 = 0b1010,
 } OLED_CLOCK_DIVIDE_RATIO;
 
 typedef enum OLED_ENHANCEMENT_B {
-	OLED_ENHANCEMENT_B_RESERVED = 0b00,
-	OLED_ENHANCEMENT_B_NORMAL = 0b10
+    OLED_ENHANCEMENT_B_RESERVED = 0b00,
+    OLED_ENHANCEMENT_B_NORMAL = 0b10
 } OLED_ENHANCEMENT_B;
 
 typedef enum OLED_COMMAND_LOCK {
-	OLED_COMMAND_LOCK_UNLOCK = 0,
-	OLED_COMMAND_LOCK_LOCKED = 1
+    OLED_COMMAND_LOCK_UNLOCK = 0,
+    OLED_COMMAND_LOCK_LOCKED = 1
 } OLED_COMMAND_LOCK;
 
 // Instruction Setting Methods
@@ -123,9 +123,9 @@ void OLED_set_column_address(uint8_t startAddress, uint8_t endAddress);
 void OLED_set_row_address(uint8_t startAddress, uint8_t endAddress);
 void OLED_enable_write_RAM();
 void OLED_enable_read_RAM();
-void OLED_set_remap_and_dual_com_line(uint8_t verticalAddressIncrement, uint8_t enableColumnAddressRemap, 
-										uint8_t enableNibbleReamp, uint8_t scanFromCOMMultiplex, 
-										uint8_t enableCOMSplitOddEven, uint8_t enableDualCOMMode);
+void OLED_set_remap_and_dual_com_line(uint8_t verticalAddressIncrement, uint8_t enableColumnAddressRemap,
+                                      uint8_t enableNibbleReamp, uint8_t scanFromCOMMultiplex,
+                                      uint8_t enableCOMSplitOddEven, uint8_t enableDualCOMMode);
 void OLED_set_display_start_line(uint8_t startLine);
 void OLED_set_display_offset(uint8_t verticalScrollOffset);
 void OLED_set_display_mode(OLED_DISPLAY_MODES displayMode);
@@ -173,14 +173,16 @@ uint8_t oledBufferUpdated[OLED_ROWS * OLED_COLUMNS / 8];
  */
 void Present_Buffer();
 
+void Clear_Buffer();
+
 
 /**
  * Sets the pixel at (x,y) in the buffer to value
- * 
+ *
  *	x: the horizontal coordinate
  *	y: the vertical coordinate
  *	value: the bit to display (1 or 0)
- * 
+ *
  * \return void
  */
 void Show_Pixel(uint16_t x, uint16_t y, uint8_t value);
@@ -189,6 +191,7 @@ void Show_Font57(uint16_t x, uint16_t y, char value);
 void Show_Char(uint16_t x, uint16_t y, char value);
 void Show_String(uint16_t x, uint16_t y, char* value);
 void Show_Formatted(uint16_t x, uint16_t y, char* format, ...);
+void display_picture(const unsigned char pic[]);
 
 
 #endif /* OLED_H_ */
