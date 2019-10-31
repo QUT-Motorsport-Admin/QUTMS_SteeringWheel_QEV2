@@ -10,8 +10,6 @@
 #include "menu.h"
 #include "OLED.h"
 #include "input.h"
-
-#include <avr/io.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdbool.h>
@@ -52,6 +50,8 @@ char* tab_text[4][4] = {
     z = {1,2,..,n} - which tab we're in
 */
 uint16_t current_screen = MENU_IN_BASE;
+input_state current_input = {0};
+input_state previous_input = {0};
 
 void menu_handle_screens(Configuration* configuration) {
 
@@ -102,9 +102,13 @@ void menu_handle_navigation(uint16_t* current_screen) {
     uint8_t current_selection = (*current_screen) % 10;
     //uint8_t in_tab = *current_screen % 10;
 
-    bool left_button = !((PINA >> BTN_C) & 1 == 1);
-    bool right_button = !((PINA >> BTN_B) & 1 == 1);
-    bool back_button = !((PINA >> BTN_A) & 1 == 1);
+    read_input(&current_input);
+
+    bool left_button = current_input.left_button && !previous_input.left_button;
+    bool right_button = current_input.right_button && !previous_input.right_button;
+    bool back_button = current_input.back_button && !previous_input.back_button;
+
+    previous_input = current_input;
 
     if ((left_button == right_button) && left_button == true) {
         if (current_state < 2) {

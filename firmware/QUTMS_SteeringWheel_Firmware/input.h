@@ -9,6 +9,8 @@
 #ifndef INPUT_H_
 #define INPUT_H_
 
+#include <stdbool.h>
+
 /*	Pinout
 
 	RX			PD0
@@ -49,5 +51,15 @@
 #define LED_A_OFF	PORTD &= ~0b01000000
 #define LED_B_ON	PORTD |= 0b10000000
 #define LED_B_OFF	PORTD &= ~0b10000000
+
+typedef struct input_state {
+    bool left_button;
+    bool right_button;
+    bool back_button;
+    double pot1;
+    double pot2;
+} input_state;
+
+void read_input(input_state* input);
 
 #endif /* MAIN_H_ */

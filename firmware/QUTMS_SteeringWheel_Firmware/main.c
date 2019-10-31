@@ -106,10 +106,9 @@ int main ( void )
     //Show_Pixel ( 0, 10, 0 );
     //Show_Pixel ( 10, 0, 1 );
     //Show_Pixel ( 10, 10, 1 );
-    Show_String(50, 20, "1234567890");
+    //Show_String(50, 20, "1234567890");
     Present_Buffer();
 
-    //uint8_t test = 0;
 
     while ( 1 )
     {
@@ -117,25 +116,7 @@ int main ( void )
         //_delay_ms ( 50 );
         //fill_RAM(CLEAR_SCREEN);
         /* Button pin change testing - validated */
-        bool left_button = !((PINA >> BTN_C) & 1 == 1);
-        bool right_button = !((PINA >> BTN_B) & 1 == 1);
-        bool back_button = !((PINA >> BTN_A) & 1 == 1);
 
-        Show_String(0, 0, left_button ? "true" : "false");
-        Show_String(0, 10, right_button ? "true" : "false");
-        Show_String(0, 20, back_button ? "true" : "false");
-
-
-
-        /*for (int i = 0; i < 8; i++) {
-            Show_Char(i * CHAR_WIDTH, 0, ((PINA >> i) & 1) == 1 ? '1' : '0');
-            Show_Char(i * CHAR_WIDTH, 10, ((PINB >> i) & 1) == 1 ? '1' : '0');
-            Show_Char(i * CHAR_WIDTH, 20, ((PINC >> i) & 1) == 1 ? '1' : '0');
-            Show_Char(i * CHAR_WIDTH, 30, ((PIND >> i) & 1) == 1 ? '1' : '0');
-            Show_Char(i * CHAR_WIDTH, 50, ((test >> i) & 1) == 1 ? '1' : '0');
-        }
-
-        test++;*/
 
         //Show_Formatted(0, 10, "%d", PINA);
         //
