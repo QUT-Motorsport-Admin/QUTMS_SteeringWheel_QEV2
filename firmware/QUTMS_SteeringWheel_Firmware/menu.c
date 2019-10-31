@@ -9,8 +9,12 @@
 
 #include "menu.h"
 #include "OLED.h"
+#include "input.h"
+
+#include <avr/io.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdbool.h>
 
 char* menu_text[4] = {
     "Screen settings",
@@ -98,7 +102,11 @@ void menu_handle_navigation(uint16_t* current_screen) {
     uint8_t current_selection = (*current_screen) % 10;
     //uint8_t in_tab = *current_screen % 10;
 
-    if (c == 't') {
+    bool left_button = !((PINA >> BTN_C) & 1 == 1);
+    bool right_button = !((PINA >> BTN_B) & 1 == 1);
+    bool back_button = !((PINA >> BTN_A) & 1 == 1);
+
+    if ((left_button == right_button) && left_button == true) {
         if (current_state < 2) {
             if (current_state == 0) {
                 current_menu = current_selection;
@@ -107,7 +115,8 @@ void menu_handle_navigation(uint16_t* current_screen) {
             }
             current_state += 1;
         }
-    } else if (c == 'q') {
+        Clear_Buffer();
+    } else if (back_button) {
         if (current_state > 0) {
             current_state -= 1;
 
@@ -116,15 +125,18 @@ void menu_handle_navigation(uint16_t* current_screen) {
                 current_menu = 0;
             }
         }
+        Clear_Buffer();
     }
     if (current_state < 2) {
-        if (c == 's') {
+        if (left_button) {
             if (current_selection < menu_max_choices_for_level(current_state, current_menu) - 1) {
                 current_selection += 1;
+                Clear_Buffer();
             }
-        } else if (c == 'w') {
+        } else if (right_button) {
             if (current_selection > 0) {
                 current_selection -= 1;
+                Clear_Buffer();
             }
         }
     }

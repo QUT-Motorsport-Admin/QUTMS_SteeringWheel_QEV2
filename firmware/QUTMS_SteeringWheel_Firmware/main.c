@@ -22,6 +22,8 @@
 #include "menu.h"
 #include "settings.h"
 
+#include <stdbool.h>
+
 // Vertical scroll
 #define UPWARD 0x00
 #define DOWNWARD 0x01
@@ -63,10 +65,12 @@ Notes   :
 ============================================================================*/
 void steering_wheel_init()
 {
+    //DDRD = 0b00000000;
     DDRD |= 0b11001000; // LEDs as outputs, DC
     /* Set MOSI and SCK output, all others input */
     DDRB |= 0b10100011; // CS/SS, reset
-    DDRA |= 0b00000000; // Set buttons as input
+    DDRA = 0b00000000; // Set buttons as input
+    PORTA = 0b11111111; // set the pullups
     // TXD/MOSI_A, OLED_CS
     SPI_CLOCK_HIGH;
     //uart0_init(9600);
@@ -105,17 +109,41 @@ int main ( void )
     Show_String(50, 20, "1234567890");
     Present_Buffer();
 
+    //uint8_t test = 0;
+
     while ( 1 )
     {
         //Clear_Buffer();
-        _delay_ms ( 50 );
+        //_delay_ms ( 50 );
         //fill_RAM(CLEAR_SCREEN);
         /* Button pin change testing - validated */
-        //if(!(PINA & (1 << BTN_C))) {
-        //LED_A_OFF;
-        //} else {
-        //LED_A_ON;
-        //}
+        bool left_button = !((PINA >> BTN_C) & 1 == 1);
+        bool right_button = !((PINA >> BTN_B) & 1 == 1);
+        bool back_button = !((PINA >> BTN_A) & 1 == 1);
+
+        Show_String(0, 0, left_button ? "true" : "false");
+        Show_String(0, 10, right_button ? "true" : "false");
+        Show_String(0, 20, back_button ? "true" : "false");
+
+
+
+        /*for (int i = 0; i < 8; i++) {
+            Show_Char(i * CHAR_WIDTH, 0, ((PINA >> i) & 1) == 1 ? '1' : '0');
+            Show_Char(i * CHAR_WIDTH, 10, ((PINB >> i) & 1) == 1 ? '1' : '0');
+            Show_Char(i * CHAR_WIDTH, 20, ((PINC >> i) & 1) == 1 ? '1' : '0');
+            Show_Char(i * CHAR_WIDTH, 30, ((PIND >> i) & 1) == 1 ? '1' : '0');
+            Show_Char(i * CHAR_WIDTH, 50, ((test >> i) & 1) == 1 ? '1' : '0');
+        }
+
+        test++;*/
+
+        //Show_Formatted(0, 10, "%d", PINA);
+        //
+        /*if(!(PINA & (1 << BTN_C))) {
+            LED_A_OFF;
+        } else {
+            LED_A_ON;
+        }*/
         /* Testing and validating ADC implementation */
 
         //Show_Pixel((double)old_pot / OLED_COLUMNS, 30, 0);
@@ -137,20 +165,20 @@ int main ( void )
         _delay_ms ( 50 );
 
 
-
-        if ( pot >= 0 && pot < 250 ) {
-            LED_A_OFF;
-            LED_B_OFF;
-        } else if ( pot >= 250 && pot < 500 ) {
-            LED_A_ON;
-            LED_B_OFF;
-        } else if ( pot >= 500 && pot < 750 ) {
-            LED_A_OFF;
-            LED_B_ON;
-        } else if ( pot >= 750 ) {
-            LED_A_ON;
-            LED_B_ON;
-        }
+        /*
+                if ( pot >= 0 && pot < 250 ) {
+                    LED_A_OFF;
+                    LED_B_OFF;
+                } else if ( pot >= 250 && pot < 500 ) {
+                    LED_A_ON;
+                    LED_B_OFF;
+                } else if ( pot >= 500 && pot < 750 ) {
+                    LED_A_OFF;
+                    LED_B_ON;
+                } else if ( pot >= 750 ) {
+                    LED_A_ON;
+                    LED_B_ON;
+                }*/
         //Present_Buffer();
     }
 

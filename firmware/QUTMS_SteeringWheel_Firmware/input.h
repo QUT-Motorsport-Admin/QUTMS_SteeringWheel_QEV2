@@ -6,14 +6,14 @@
 * @brief   This file defines the outputs and inputs of the pins of the MCU
 *****************************************************************************/
 
-#ifndef MAIN_H_
-#define MAIN_H_
+#ifndef INPUT_H_
+#define INPUT_H_
 
 /*	Pinout
 
 	RX			PD0
 	TX			PD1
-	
+
 */
 
 /* SPI */
