@@ -19,6 +19,8 @@
 #include "images.h"
 #include "input.h"
 #include "adc.h"
+#include "menu.h"
+#include "settings.h"
 
 // Vertical scroll
 #define UPWARD 0x00
@@ -76,6 +78,7 @@ void steering_wheel_init()
 }
 
 uint16_t pot = 0;
+uint16_t old_pot = 0;
 
 uint8_t n = 123;
 uint8_t buffer[8];
@@ -88,11 +91,11 @@ int main ( void )
 {
     steering_wheel_init();
 
-    Show_Pixel ( 0, 0, 1 );
+    /*Show_Pixel ( 0, 0, 1 );
     Show_Pixel ( 1, 0, 1 );
     Show_Pixel ( 2, 0, 1 );
     Show_Pixel ( 3, 0, 1 );
-    Show_Pixel ( 4, 0, 1 );
+    Show_Pixel ( 4, 0, 1 );*/
     //Show_Pixel ( 0, 10, 1 );
     Present_Buffer();
     //_delay_ms ( 1000 );
@@ -115,14 +118,19 @@ int main ( void )
         //}
         /* Testing and validating ADC implementation */
 
+        //Show_Pixel((double)old_pot / OLED_COLUMNS, 30, 0);
         pot = adc_read ( 0 );
+        //Show_Pixel((double)pot / OLED_COLUMNS, 30, 1);
+        old_pot = pot;
         /* UART */
         //uart0_transmit(pot >> 2);
         //uart0_transmit(pot);
         //itoa(pot,TempBuffer,10);
         //Show_String(1,TempBuffer,0x28,0x05);
+        Configuration config;
+        menu_handle_screens(&config);
 
-        Show_Formatted(20, 20, "%04d", pot);
+        //Show_Formatted(20, 20, "%04d", pot);
         Present_Buffer();
 
 

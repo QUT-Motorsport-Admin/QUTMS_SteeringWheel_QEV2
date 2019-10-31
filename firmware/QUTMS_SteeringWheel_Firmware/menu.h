@@ -1,3 +1,12 @@
+/*****************************************************************************
+* @file    firmware/QUTMS_SteeringWheel_Firmware/menu.h
+* @author  Calvin Johnson
+* @version V1.0.0
+* @date    31/10/2019 5:39pm
+* @brief   This file declares the variables and functions that are used to
+*          handle the menus on the screen
+*****************************************************************************/
+
 #ifndef MENU_H_
 #define MENU_H_
 
@@ -16,12 +25,6 @@ typedef enum MENU_IDS {
     MENU_ADV_SETTINGS = 3,
 } MENU_IDS;
 
-char *menu_text[4] = {
-    "Screen settings",
-    "Driver selection",
-    "Power mode settings",
-    "Advanced settings",
-};
 
 typedef enum TAB_IDS {
     TAB_SCR_SETTINGS_BRIGHTNESS = 1,
@@ -39,11 +42,11 @@ typedef enum TAB_IDS {
 
 uint8_t menu_max_choices_for_level(uint8_t current_state, uint8_t current_menu);
 
-void menu_handle_screens(Configuration *configuration);
+void menu_handle_screens(Configuration* configuration);
 
 // menus
-void menu_handle_navigation(uint16_t *current_screen);
-void menu_draw_menu(uint16_t *current_screen);
+void menu_handle_navigation(uint16_t* current_screen);
+void menu_draw_menu(uint16_t* current_screen);
 // tabs
 
 #endif

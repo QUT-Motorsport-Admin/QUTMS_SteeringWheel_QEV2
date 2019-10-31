@@ -10,10 +10,12 @@
 #ifndef OLED_H_
 #define OLED_H_
 
-#define OLED_CS_HIGH PORTB |= 0b00000010
-#define OLED_CS_LOW PORTB &= ~ 0b00000010
+#include <stdint.h>
 
-#define OLED_RESET_HIGH	PORTB |= 0b00000001
+#define OLED_CS_HIGH PORTB |= 0b00000010
+#define OLED_CS_LOW PORTB &= ~0b00000010
+
+#define OLED_RESET_HIGH PORTB |= 0b00000001
 #define OLED_RESET_LOW PORTB &= ~0b00000001
 
 #define SPI_CLOCK_HIGH PORTB |= 0b10000000
@@ -23,7 +25,7 @@
 #define SPI_DATA_LOW PORTB &= ~0b00100000
 
 // current transmission mode
-#define OLED_DC_DATA PORTD |= 0b00001000 // D4 ON
+#define OLED_DC_DATA PORTD |= 0b00001000         // D4 ON
 #define OLED_DC_INSTRUCTION PORTD &= ~0b00001000 // D4 OFF
 
 #define OLED_BRIGHTNESS 0x0F
@@ -87,8 +89,6 @@ typedef enum OLED_GPIO_SETTINGS {
     OLED_GPIO_OUTPUT_LOW = 0b10,
     OLED_GPIO_OUTPUT_HIGH = 0b11,
 } OLED_GPIO_SETTINGS;
-
-
 
 typedef enum OLED_CLOCK_DIVIDE_RATIO {
     OLED_CLOCK_DIVIDE_RATIO_1 = 0b0000,
@@ -162,11 +162,12 @@ void OLED_fill_ram(uint8_t data);
 #define OLED_ROWS OLED_Y
 #define OLED_COLUMNS OLED_X / 4
 
+#define CHAR_HEIGHT 8
+#define CHAR_WIDTH 5
 
 //uint8_t oledBufferPrevious[OLED_COLUMN_COUNT * OLED_ROWS];
 uint8_t oledBuffer[OLED_ROWS * OLED_COLUMNS];
 uint8_t oledBufferUpdated[OLED_ROWS * OLED_COLUMNS / 8];
-
 
 /**
  * Presents the content of the current buffer to the OLED screen
@@ -174,7 +175,6 @@ uint8_t oledBufferUpdated[OLED_ROWS * OLED_COLUMNS / 8];
 void Present_Buffer();
 
 void Clear_Buffer();
-
 
 /**
  * Sets the pixel at (x,y) in the buffer to value
@@ -189,9 +189,8 @@ void Show_Pixel(uint16_t x, uint16_t y, uint8_t value);
 
 void Show_Font57(uint16_t x, uint16_t y, char value);
 void Show_Char(uint16_t x, uint16_t y, char value);
-void Show_String(uint16_t x, uint16_t y, char* value);
-void Show_Formatted(uint16_t x, uint16_t y, char* format, ...);
+void Show_String(uint16_t x, uint16_t y, char *value);
+void Show_Formatted(uint16_t x, uint16_t y, char *format, ...);
 void display_picture(const unsigned char pic[]);
-
 
 #endif /* OLED_H_ */
