@@ -8,19 +8,19 @@
 
 #define F_CPU 16000000UL /* CPU clock in Hertz */
 
-#include <avr/io.h>
-#include <util/delay.h>
 #include <avr/interrupt.h>
+#include <avr/io.h>
 #include <avr/pgmspace.h>
+#include <util/delay.h>
 
-#include "UART.h"
-#include "spi.h"
 #include "OLED.h"
+#include "UART.h"
+#include "adc.h"
 #include "images.h"
 #include "input.h"
-#include "adc.h"
 #include "menu.h"
 #include "settings.h"
+#include "spi.h"
 
 #include <stdbool.h>
 
@@ -32,8 +32,6 @@
 #define UPWARD_OUT 0x02
 #define DOWNWARD_OUT 0x03
 
-
-
 /*============================================================================
 Function:   splash_screen()
 ------------------------------------------------------------------------------
@@ -43,15 +41,13 @@ Input   :   none
 Returns :   void
 Notes   :
 ============================================================================*/
-void splash_screen()
-{
+void splash_screen() {
     Clear_Buffer();
-    display_picture ( MOTORSPORT );
+    display_picture(MOTORSPORT);
     Present_Buffer();
-    _delay_ms ( 3000 );
+    _delay_ms(3000);
     Clear_Buffer();
     // Add transition effect
-
 }
 
 /*============================================================================
@@ -63,13 +59,12 @@ Input   :   none
 Returns :   void
 Notes   :
 ============================================================================*/
-void steering_wheel_init()
-{
+void steering_wheel_init() {
     //DDRD = 0b00000000;
     DDRD |= 0b11001000; // LEDs as outputs, DC
     /* Set MOSI and SCK output, all others input */
     DDRB |= 0b10100011; // CS/SS, reset
-    DDRA = 0b00000000; // Set buttons as input
+    DDRA = 0b00000000;  // Set buttons as input
     PORTA = 0b11111111; // set the pullups
     // TXD/MOSI_A, OLED_CS
     SPI_CLOCK_HIGH;
@@ -91,8 +86,7 @@ unsigned char TempBuffer[10];
 
 //uint32_t data = 0;
 
-int main ( void )
-{
+int main(void) {
     steering_wheel_init();
 
     /*Show_Pixel ( 0, 0, 1 );
@@ -109,14 +103,11 @@ int main ( void )
     //Show_String(50, 20, "1234567890");
     Present_Buffer();
 
-
-    while ( 1 )
-    {
+    while (1) {
         //Clear_Buffer();
         //_delay_ms ( 50 );
         //fill_RAM(CLEAR_SCREEN);
         /* Button pin change testing - validated */
-
 
         //Show_Formatted(0, 10, "%d", PINA);
         //
@@ -128,7 +119,7 @@ int main ( void )
         /* Testing and validating ADC implementation */
 
         //Show_Pixel((double)old_pot / OLED_COLUMNS, 30, 0);
-        pot = adc_read ( 0 );
+        pot = adc_read(0);
         //Show_Pixel((double)pot / OLED_COLUMNS, 30, 1);
         old_pot = pot;
         /* UART */
@@ -137,14 +128,13 @@ int main ( void )
         //itoa(pot,TempBuffer,10);
         //Show_String(1,TempBuffer,0x28,0x05);
         Configuration config;
-        menu_handle_screens(&config);
+        Configuration *config_address = &config;
+        menu_handle_screens(&config_address);
 
         //Show_Formatted(20, 20, "%04d", pot);
         Present_Buffer();
 
-
-        _delay_ms ( 50 );
-
+        _delay_ms(50);
 
         /*
                 if ( pot >= 0 && pot < 250 ) {
@@ -162,6 +152,4 @@ int main ( void )
                 }*/
         //Present_Buffer();
     }
-
-
 }

@@ -150,6 +150,9 @@
     <Compile Include="images.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="input.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="input.h">
       <SubType>compile</SubType>
     </Compile>

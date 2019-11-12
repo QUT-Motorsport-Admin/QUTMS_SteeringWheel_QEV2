@@ -4,9 +4,13 @@
 
 adc.c
 
+input.c
+
 main.c
 
 MCP2517FD.c
+
+menu.c
 
 OLED.c
 
