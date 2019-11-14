@@ -50,9 +50,11 @@ char* tab_text[4][4] = {
 */
 uint16_t current_screen = MENU_IN_BASE;
 input_state current_input = {0};
-input_state previous_input = {0};
+//input_state previous_input = {0};
 
 void menu_handle_screens(Configuration** configuration) {
+	// update input
+	read_input(&current_input);
     // draw current driver and power
     // draw current driver
     Show_Formatted(2, 1, "Driver: %s", tab_text[MENU_DRV_SELECTION][(*configuration)->driver_index]);
@@ -130,15 +132,15 @@ void menu_handle_navigation(uint16_t* current_screen) {
     uint8_t current_selection = (*current_screen) % 10;
     //uint8_t in_tab = *current_screen % 10;
 
-    read_input(&current_input);
+    
 
-    bool left_button = current_input.left_button && !previous_input.left_button;
+    /*bool left_button = current_input.left_button && !previous_input.left_button;
     bool right_button = current_input.right_button && !previous_input.right_button;
-    bool back_button = current_input.back_button && !previous_input.back_button;
+    bool back_button = current_input.back_button && !previous_input.back_button;*/
 
-    previous_input = current_input;
-
-    if ((left_button == right_button) && left_button == true) {
+   // previous_input = current_input;
+   if (current_input.back_button){
+    //if ((current_input.left_button == current_input.right_button) && current_input.left_button == true) {
         if (current_state < 2) {
             if (current_state == 0) {
                 current_menu = current_selection;
@@ -148,20 +150,20 @@ void menu_handle_navigation(uint16_t* current_screen) {
             current_state += 1;
         }
         Clear_Buffer();
-    } else if (back_button) {
+    }/* else if (current_input.back_button) {
         menu_exit_tab(current_screen);
         current_state = *current_screen / 100;
         current_menu = (*current_screen / 10) % 10;
         current_selection = (*current_screen) % 10;
         Clear_Buffer();
-    }
+    }*/
     if (current_state < 2) {
-        if (left_button) {
+        if (current_input.left_button) {
             if (current_selection < menu_max_choices_for_level(current_state, current_menu) - 1) {
                 current_selection += 1;
                 Clear_Buffer();
             }
-        } else if (right_button) {
+        } else if (current_input.right_button) {
             if (current_selection > 0) {
                 current_selection -= 1;
                 Clear_Buffer();
@@ -203,25 +205,23 @@ void adjust_value_tab(int* value, char* title, uint16_t* current_screen) {
     char* prevText = "Previous Setting";
     char* newText = "New setting";
 
-    Show_String(OLED_X / 2 - titleLength / 2, TOP_BAR_HEIGHT, title);
+    Show_String(OLED_X / 2 - (titleLength / 2)*CHAR_WIDTH, TOP_BAR_HEIGHT, title);
 
     Show_String((settingWidth / 2) - (strlen(prevText) / 2) * CHAR_WIDTH, TOP_BAR_HEIGHT + CHAR_HEIGHT, prevText);
-    Show_Formatted((settingWidth / 2) - 3, TOP_BAR_HEIGHT + 2, "%03d %c", *value, '%');
+    Show_Formatted((settingWidth / 2) - 3, TOP_BAR_HEIGHT + 2*CHAR_HEIGHT, "%03d %c", *value, '%');
 
     Show_String(1.5 * settingWidth - (strlen(newText) / 2) * CHAR_WIDTH, TOP_BAR_HEIGHT + CHAR_HEIGHT, newText);
-    Show_Formatted(1.5 * settingWidth - 3 * CHAR_WIDTH, TOP_BAR_HEIGHT + 2, "%03d %c", temp_adjustment, '%');
+    Show_Formatted(1.5 * settingWidth - 3 * CHAR_WIDTH, TOP_BAR_HEIGHT + 2*CHAR_HEIGHT, "%03d %c", temp_adjustment, '%');
 
-    if (current_input.left_button) {
-        temp_adjustment -= 10;
-        if (temp_adjustment < 0) {
-            temp_adjustment = 0;
-        }
-    } else if (current_input.right_button) {
-        temp_adjustment += 10;
-        if (temp_adjustment > 100) {
-            temp_adjustment = 100;
-        }
-    } else if (current_input.select_button) {
+	temp_adjustment += current_input.encoder * 2;
+
+    if (temp_adjustment < 0) {
+		temp_adjustment = 0;
+    }
+    if (temp_adjustment > 100) {
+		temp_adjustment = 100;
+    }
+    if (current_input.select_button) {
         *value = temp_adjustment;
         temp_adjustment = -1;
         menu_exit_tab(current_screen);

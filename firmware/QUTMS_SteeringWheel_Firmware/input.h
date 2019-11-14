@@ -18,6 +18,8 @@
 
 */
 
+#define BIT_VALUE(reg, pin) ((reg>>pin) & 1)
+
 /* SPI */
 #define SPI_MOSI PINB5
 #define SPI_MISO PINB6
@@ -52,15 +54,20 @@
 #define LED_B_ON PORTD |= 0b10000000
 #define LED_B_OFF PORTD &= ~0b10000000
 
+/* Rotary Encoder */
+#define ROT_ENC_A PINA6//!((PINA >> PINA6) & 1 == 1)
+#define ROT_ENC_B PINA7//!((PINA >> PINA6) & 1 == 1)
+
 typedef struct input_state {
     bool left_button;
     bool right_button;
     bool back_button;
     bool select_button;
     double pot1;
-    double pot2;
+    int encoder;
 } input_state;
 
+void configure_input();
 void read_input(input_state *input);
 
 #endif /* MAIN_H_ */
