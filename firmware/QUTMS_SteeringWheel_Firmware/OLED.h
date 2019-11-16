@@ -165,6 +165,10 @@ void OLED_fill_ram(uint8_t data);
 #define CHAR_HEIGHT 8
 #define CHAR_WIDTH 5
 
+#define BIG_CHAR_MOD 3
+#define CHAR_HEIGHT_BIG (CHAR_HEIGHT * BIG_CHAR_MOD)
+#define CHAR_WIDTH_BIG (CHAR_WIDTH * BIG_CHAR_MOD)
+
 //uint8_t oledBufferPrevious[OLED_COLUMN_COUNT * OLED_ROWS];
 uint8_t oledBuffer[OLED_ROWS * OLED_COLUMNS];
 uint8_t oledBufferUpdated[OLED_ROWS * OLED_COLUMNS / 8];
@@ -189,8 +193,11 @@ void Show_Pixel(uint16_t x, uint16_t y, uint8_t value);
 
 void Show_Font57(uint16_t x, uint16_t y, char value);
 void Show_Char(uint16_t x, uint16_t y, char value);
+void Show_Char_Big(uint16_t x, uint16_t y, char value);
 void Show_String(uint16_t x, uint16_t y, char *value);
+void Show_String_Big(uint16_t x, uint16_t y, char *value);
 void Show_Formatted(uint16_t x, uint16_t y, char *format, ...);
+
 void display_picture(const unsigned char pic[]);
 
 #endif /* OLED_H_ */

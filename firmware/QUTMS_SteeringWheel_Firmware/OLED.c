@@ -489,14 +489,57 @@ void Show_Font57(uint16_t x, uint16_t y, char value) {
 void Show_Char(uint16_t x, uint16_t y, char value) {
     Show_Font57(x, y, value);
 }
+
+void Show_Char_Big(uint16_t x, uint16_t y, char value) {
+    if (value == ' ') {
+        // set character to '96' (break space)
+        value = 0x60;
+    } else {
+        // offset character by 32 to line it up with our character map
+        value -= 0x20;
+    }
+
+    // pointer to first element of binary ascii representation
+    unsigned char *asciiSrcPointer = Ascii_2[(value - 1)];
+    //0001 0101
+    //OLED_set_remap_and_dual_com_line(1, 0, 1, 1, 0, 1);
+
+    // loop through each bit
+    for (uint8_t i = 0; i < CHAR_HEIGHT; i++) {
+        // loop through ascii binary data
+        for (uint8_t j = 0; j < CHAR_WIDTH; j++) {
+            uint8_t bit = ((asciiSrcPointer[j] >> i) & 1) == 0 ? 0 : 1;
+
+            for (uint8_t bi = 0; bi < BIG_CHAR_MOD; bi++) {
+                for (uint8_t bj = 0; bj < BIG_CHAR_MOD; bj++) {
+                    Show_Pixel(x + j * BIG_CHAR_MOD + bi, y + i * BIG_CHAR_MOD + bj, bit);
+                }
+            }
+        }
+    }
+}
+
 void Show_String(uint16_t x, uint16_t y, char *value) {
-    const uint16_t characterWidth = 6;
+    const uint16_t characterWidth = CHAR_WIDTH + 1;
 
     int index = 0;
 
     // loop through value until we get a NULL (c has NULL terminated strings)
     while (value[index] != 0) {
         Show_Char(x, y, value[index]);
+        x += characterWidth;
+        index++;
+    }
+}
+
+void Show_String_Big(uint16_t x, uint16_t y, char *value) {
+    const uint16_t characterWidth = CHAR_WIDTH_BIG + 1;
+
+    int index = 0;
+
+    // loop through value until we get a NULL (c has NULL terminated strings)
+    while (value[index] != 0) {
+        Show_Char_Big(x, y, value[index]);
         x += characterWidth;
         index++;
     }

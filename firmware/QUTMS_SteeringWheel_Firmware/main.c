@@ -11,8 +11,8 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
-#include <util/delay.h>
 #include <stdbool.h>
+#include <util/delay.h>
 
 #include "OLED.h"
 #include "UART.h"
@@ -66,7 +66,7 @@ void steering_wheel_init() {
     /* Set MOSI and SCK output, all others input */
     DDRB |= 0b10100011; // CS/SS, reset
 
-	configure_input();
+    configure_input();
     // TXD/MOSI_A, OLED_CS
     SPI_CLOCK_HIGH;
     //uart0_init(9600);
@@ -88,12 +88,37 @@ unsigned char TempBuffer[10];
 //uint32_t data = 0;
 
 int main(void) {
+    //_delay_ms(1000);
     steering_wheel_init();
+    OLED_set_display_mode(OLED_DISPLAYMODE_INVERSE);
 
-	Configuration config;
-	Configuration *config_address = &config;
-	
+    Configuration config;
+    Configuration *config_address = &config;
+
+    /*for (int i = 0; i < 270; i++) {
+        for (int j = 0; j < OLED_Y; j++) {
+            Show_Pixel(i, j, 1);
+        }
+    }
+
+    for (int i = 0; i < 254; i++) {
+        Show_Pixel(i, 0, 0);
+    }
+    Show_Pixel(0, 0, 1);
+    Show_Pixel(0, 1, 1);
+    //Show_Char(0, 0, 't');
+    //Show_Pixel(100, 50, 1);
+    Present_Buffer(0);
+    //_delay_ms(1000);
+    // Clear_Buffer();
+    */
+
+    Show_String(0, 0, "test123456789");
+    Show_String_Big(0, CHAR_HEIGHT_BIG, "test123456789");
+    Present_Buffer();
+
     while (1) {
+
         //Clear_Buffer();
         //_delay_ms ( 50 );
         //fill_RAM(CLEAR_SCREEN);
@@ -117,11 +142,9 @@ int main(void) {
         //uart0_transmit(pot);
         //itoa(pot,TempBuffer,10);
         //Show_String(1,TempBuffer,0x28,0x05);
-		menu_handle_screens(&config_address);
-
+        //menu_handle_screens(&config_address);
 
         //Show_Formatted(20, 20, "%04d", pot);
-        Present_Buffer();
 
         //_delay_ms(50);
 
@@ -139,6 +162,6 @@ int main(void) {
                     LED_A_ON;
                     LED_B_ON;
                 }*/
-        //Present_Buffer();
+        Present_Buffer();
     }
 }
