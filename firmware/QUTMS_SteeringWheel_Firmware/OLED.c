@@ -347,8 +347,8 @@ void OLED_set_command_lock(uint8_t lock) {
 }
 
 void OLED_fill_ram(uint8_t data) {
-    OLED_set_column_address(0, OLED_COLUMNS);
-    OLED_set_row_address(0, OLED_ROWS);
+    OLED_set_column_address(0, OLED_COLUMNS - 1);
+    OLED_set_row_address(0, OLED_ROWS - 1);
     OLED_enable_write_RAM();
 
     for (uint8_t i = 0; i < OLED_ROWS; i++) {
@@ -363,6 +363,10 @@ void OLED_fill_ram(uint8_t data) {
 //  Wrapper Functions
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 void Present_Buffer() {
+    //OLED_set_column_address(0, OLED_COLUMNS - 1);
+    //OLED_set_row_address(0, OLED_ROWS - 1);
+    //OLED_enable_write_RAM();
+
     for (uint8_t i = 0; i < OLED_ROWS; i++) {
         for (uint8_t j = 0; j < OLED_COLUMNS; j++) {
             int index = i * OLED_ROWS + j;
@@ -373,6 +377,7 @@ void Present_Buffer() {
             // has this part of the screen changed?
             if (((oledBufferUpdated[flagIndex] >> flagPos) & 1) == 1) {
                 // set bit flag back to zero since we are showing it
+
                 oledBufferUpdated[flagIndex] &= ~(1 << flagPos);
 
                 // currentData is in format 0b d3 d2 d1 d0
@@ -395,8 +400,8 @@ void Present_Buffer() {
                 uint8_t data0 = (d0 << 4) | d1;
                 uint8_t data1 = (d2 << 4) | d3;
 
-                OLED_set_column_address(j, 0x77);
-                OLED_set_row_address(i, 0x7F);
+                OLED_set_column_address(j, OLED_COLUMNS - 1);
+                OLED_set_row_address(i, OLED_ROWS - 1);
 
                 OLED_enable_write_RAM();
                 OLED_write_data(data0);
@@ -439,6 +444,10 @@ void Show_Pixel(uint16_t x, uint16_t y, uint8_t value) {
     mask = ~(mask << (colPos * 2));
 
     uint8_t currentData = oledBuffer[bufferIndex] & (mask << (colPos * 2));
+
+    oledBuffer[bufferIndex] &= mask;
+    // add the new data
+    oledBuffer[bufferIndex] |= data;
 
     if (currentData != data) {
 
