@@ -10,6 +10,7 @@
 #ifndef OLED_H_
 #define OLED_H_
 
+#include <avr/io.h>
 #include <stdint.h>
 
 #define OLED_CS_HIGH PORTB |= 0b00000010
@@ -197,6 +198,8 @@ void Show_Char_Big(uint16_t x, uint16_t y, char value);
 void Show_String(uint16_t x, uint16_t y, char *value);
 void Show_String_Big(uint16_t x, uint16_t y, char *value);
 void Show_Formatted(uint16_t x, uint16_t y, char *format, ...);
+
+void Show_Progress_Bar(uint16_t x, uint16_t y, uint8_t width, uint8_t height, double percentage);
 
 void display_picture(const unsigned char pic[]);
 

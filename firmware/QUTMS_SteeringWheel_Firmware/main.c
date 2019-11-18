@@ -17,11 +17,12 @@
 #include "OLED.h"
 #include "UART.h"
 #include "adc.h"
+#include "drive_menu.h"
 #include "images.h"
 #include "input.h"
-#include "menu.h"
 #include "settings.h"
 #include "spi.h"
+#include "static_menu.h"
 
 #include <stdbool.h>
 
@@ -72,7 +73,15 @@ void steering_wheel_init() {
     //uart0_init(9600);
     adc_init();
     spi_init();
+
+    // initialize screen
     OLED_init();
+    // use inverse mode for better visibility
+    OLED_set_display_mode(OLED_DISPLAYMODE_INVERSE);
+
+    // setup driving menu inc CANbus
+    DM_init();
+
     sei(); // Enable interrupts
     //splash_screen();
 }
@@ -95,45 +104,12 @@ int main(void) {
     Configuration config;
     Configuration *config_address = &config;
 
-    /*for (int i = 0; i < 270; i++) {
-        for (int j = 0; j < OLED_Y; j++) {
-            Show_Pixel(i, j, 1);
-        }
-    }
-
-    for (int i = 0; i < 254; i++) {
-        Show_Pixel(i, 0, 0);
-    }
-    Show_Pixel(0, 0, 1);
-    Show_Pixel(0, 1, 1);
-    //Show_Char(0, 0, 't');
-    //Show_Pixel(100, 50, 1);
-    Present_Buffer(0);
-    //_delay_ms(1000);
-    // Clear_Buffer();
-    */
-
     Show_String(0, 0, "test123456789");
     Show_String_Big(0, CHAR_HEIGHT_BIG, "test123456789");
     Present_Buffer();
 
     while (1) {
 
-        //Clear_Buffer();
-        //_delay_ms ( 50 );
-        //fill_RAM(CLEAR_SCREEN);
-        /* Button pin change testing - validated */
-
-        //Show_Formatted(0, 10, "%d", PINA);
-        //
-        /*if(!(PINA & (1 << BTN_C))) {
-            LED_A_OFF;
-        } else {
-            LED_A_ON;
-        }*/
-        /* Testing and validating ADC implementation */
-
-        //Show_Pixel((double)old_pot / OLED_COLUMNS, 30, 0);
         //pot = adc_read(0);
         //Show_Pixel((double)pot / OLED_COLUMNS, 30, 1);
         //old_pot = pot;
@@ -148,20 +124,9 @@ int main(void) {
 
         //_delay_ms(50);
 
-        /*
-                if ( pot >= 0 && pot < 250 ) {
-                    LED_A_OFF;
-                    LED_B_OFF;
-                } else if ( pot >= 250 && pot < 500 ) {
-                    LED_A_ON;
-                    LED_B_OFF;
-                } else if ( pot >= 500 && pot < 750 ) {
-                    LED_A_OFF;
-                    LED_B_ON;
-                } else if ( pot >= 750 ) {
-                    LED_A_ON;
-                    LED_B_ON;
-                }*/
+        // run drive menu
+        DM_process();
+
         Present_Buffer();
     }
 }

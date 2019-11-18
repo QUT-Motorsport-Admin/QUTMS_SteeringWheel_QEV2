@@ -553,6 +553,29 @@ void Show_Formatted(uint16_t x, uint16_t y, char *format, ...) {
     Show_String(x, y, buffer);
 }
 
+void Show_Progress_Bar(uint16_t x, uint16_t y, uint8_t width, uint8_t height, double percentage) {
+    // draw vertical borders
+    for (uint16_t i = x; i < x + width; i++) {
+        Show_Pixel(i, y, 1);
+        Show_Pixel(i, y + height - 1, 1);
+    }
+
+    // draw horizontal borders
+    for (uint16_t i = y; i < y + height; i++) {
+        Show_Pixel(x, i, 1);
+        Show_Pixel(x + width - 1, i, 1);
+    }
+
+    uint16_t endX = (x + width - 1) * percentage;
+
+    // draw filled in area
+    for (uint16_t i = x; i < endX + 1; i++) {
+        for (uint16_t j = y; j < y + height; j++) {
+            Show_Pixel(i, j, 1);
+        }
+    }
+}
+
 void display_picture(const unsigned char pic[]) {
     uint8_t i, j, pix;
 
