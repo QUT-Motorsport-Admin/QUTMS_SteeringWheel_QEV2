@@ -35,6 +35,8 @@
 *.i*86
 *.x86_64
 *.hex
+*.lss
+*.srec
 
 # Debug files
 *.dSYM/
@@ -53,3 +55,6 @@ dkms.conf
 
 # VS code files
 .vs
+*.json
+
+

@@ -1,27 +1,27 @@
 /*****************************************************************************
-* @file    firmware/QUTMS_SteeringWheel_Firmware/menu.c
+* @file    firmware/QUTMS_SteeringWheel_Firmware/static_menu.c
 * @author  Calvin Johnson
 * @version V1.0.0
 * @date    31/10/2019 5:39pm
 * @brief   This file declares the variables and functions that are used to
-*          handle the menus on the screen
+*          handle the static menu
 *****************************************************************************/
 
-#include "menu.h"
+#include "static_menu.h"
 #include "OLED.h"
 #include "input.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 
-char* menu_text[4] = {
+char *menu_text[4] = {
     "Screen settings",
     "Driver selection",
     "Power mode settings",
     "Advanced settings",
 };
 
-char* tab_text[4][4] = {
+char *tab_text[4][4] = {
     {
         "Screen brightness",
         "Dash LED intensity",
@@ -52,9 +52,9 @@ uint16_t current_screen = MENU_IN_BASE;
 input_state current_input = {0};
 //input_state previous_input = {0};
 
-void menu_handle_screens(Configuration** configuration) {
-	// update input
-	read_input(&current_input);
+void menu_handle_screens(Configuration **configuration) {
+    // update input
+    read_input(&current_input);
     // draw current driver and power
     // draw current driver
     Show_Formatted(2, 1, "Driver: %s", tab_text[MENU_DRV_SELECTION][(*configuration)->driver_index]);
@@ -108,7 +108,7 @@ uint8_t menu_max_choices_for_level(uint8_t current_state, uint8_t current_menu) 
     return 0;
 }
 
-void menu_draw_menu(uint16_t* current_screen) {
+void menu_draw_menu(uint16_t *current_screen) {
     uint8_t current_state = *current_screen / 100;
     uint8_t current_menu = (*current_screen / 10) % 10;
     uint8_t current_selection = (*current_screen) % 10;
@@ -122,7 +122,7 @@ void menu_draw_menu(uint16_t* current_screen) {
     }
 }
 
-void menu_handle_navigation(uint16_t* current_screen) {
+void menu_handle_navigation(uint16_t *current_screen) {
     // for terminal testing, TODO: add actual input
     //char c = 0; //get_char();
 
@@ -132,15 +132,13 @@ void menu_handle_navigation(uint16_t* current_screen) {
     uint8_t current_selection = (*current_screen) % 10;
     //uint8_t in_tab = *current_screen % 10;
 
-    
-
     /*bool left_button = current_input.left_button && !previous_input.left_button;
     bool right_button = current_input.right_button && !previous_input.right_button;
     bool back_button = current_input.back_button && !previous_input.back_button;*/
 
-   // previous_input = current_input;
-   if (current_input.back_button){
-    //if ((current_input.left_button == current_input.right_button) && current_input.left_button == true) {
+    // previous_input = current_input;
+    if (current_input.back_button) {
+        //if ((current_input.left_button == current_input.right_button) && current_input.left_button == true) {
         if (current_state < 2) {
             if (current_state == 0) {
                 current_menu = current_selection;
@@ -150,7 +148,7 @@ void menu_handle_navigation(uint16_t* current_screen) {
             current_state += 1;
         }
         Clear_Buffer();
-    }/* else if (current_input.back_button) {
+    } /* else if (current_input.back_button) {
         menu_exit_tab(current_screen);
         current_state = *current_screen / 100;
         current_menu = (*current_screen / 10) % 10;
@@ -175,7 +173,7 @@ void menu_handle_navigation(uint16_t* current_screen) {
     *current_screen = current_state * 100 + current_menu * 10 + current_selection;
 }
 
-void menu_exit_tab(uint16_t* current_screen) {
+void menu_exit_tab(uint16_t *current_screen) {
     uint8_t current_state = *current_screen / 100;
     uint8_t current_menu = (*current_screen / 10) % 10;
     uint8_t current_selection = (*current_screen) % 10;
@@ -190,36 +188,36 @@ void menu_exit_tab(uint16_t* current_screen) {
     *current_screen = current_state * 100 + current_menu * 10 + current_selection;
 }
 
-Configuration* get_driver_config(uint8_t driver_index) {
+Configuration *get_driver_config(uint8_t driver_index) {
     // TODO: make this read from the EPROM
     return NULL;
 }
 
 int temp_adjustment = -1;
-void adjust_value_tab(int* value, char* title, uint16_t* current_screen) {
+void adjust_value_tab(int *value, char *title, uint16_t *current_screen) {
     if (temp_adjustment < 0) {
         temp_adjustment = *value;
     }
     int titleLength = strlen(title);
     int settingWidth = OLED_X / 2;
-    char* prevText = "Previous Setting";
-    char* newText = "New setting";
+    char *prevText = "Previous Setting";
+    char *newText = "New setting";
 
-    Show_String(OLED_X / 2 - (titleLength / 2)*CHAR_WIDTH, TOP_BAR_HEIGHT, title);
+    Show_String(OLED_X / 2 - (titleLength / 2) * CHAR_WIDTH, TOP_BAR_HEIGHT, title);
 
     Show_String((settingWidth / 2) - (strlen(prevText) / 2) * CHAR_WIDTH, TOP_BAR_HEIGHT + CHAR_HEIGHT, prevText);
-    Show_Formatted((settingWidth / 2) - 3, TOP_BAR_HEIGHT + 2*CHAR_HEIGHT, "%03d %c", *value, '%');
+    Show_Formatted((settingWidth / 2) - 3, TOP_BAR_HEIGHT + 2 * CHAR_HEIGHT, "%03d %c", *value, '%');
 
     Show_String(1.5 * settingWidth - (strlen(newText) / 2) * CHAR_WIDTH, TOP_BAR_HEIGHT + CHAR_HEIGHT, newText);
-    Show_Formatted(1.5 * settingWidth - 3 * CHAR_WIDTH, TOP_BAR_HEIGHT + 2*CHAR_HEIGHT, "%03d %c", temp_adjustment, '%');
+    Show_Formatted(1.5 * settingWidth - 3 * CHAR_WIDTH, TOP_BAR_HEIGHT + 2 * CHAR_HEIGHT, "%03d %c", temp_adjustment, '%');
 
-	temp_adjustment += current_input.encoder * 2;
+    temp_adjustment += current_input.encoder * 2;
 
     if (temp_adjustment < 0) {
-		temp_adjustment = 0;
+        temp_adjustment = 0;
     }
     if (temp_adjustment > 100) {
-		temp_adjustment = 100;
+        temp_adjustment = 100;
     }
     if (current_input.select_button) {
         *value = temp_adjustment;

@@ -1,14 +1,14 @@
 /*****************************************************************************
-* @file    firmware/QUTMS_SteeringWheel_Firmware/menu.h
+* @file    firmware/QUTMS_SteeringWheel_Firmware/static_menu.h
 * @author  Calvin Johnson
 * @version V1.0.0
 * @date    31/10/2019 5:39pm
 * @brief   This file declares the variables and functions that are used to
-*          handle the menus on the screen
+*          handle the static menu
 *****************************************************************************/
 
-#ifndef MENU_H_
-#define MENU_H_
+#ifndef STATIC_MENU_H_
+#define STATIC_MENU_H_
 
 #include "OLED.h"
 #include "settings.h"
@@ -47,16 +47,16 @@ typedef enum TAB_IDS {
 
 uint8_t menu_max_choices_for_level(uint8_t current_state, uint8_t current_menu);
 
-void menu_handle_screens(Configuration** configuration);
+void menu_handle_screens(Configuration **configuration);
 
 // menus
-void menu_exit_tab(uint16_t* current_screen);
-void menu_handle_navigation(uint16_t* current_screen);
-void menu_draw_menu(uint16_t* current_screen);
+void menu_exit_tab(uint16_t *current_screen);
+void menu_handle_navigation(uint16_t *current_screen);
+void menu_draw_menu(uint16_t *current_screen);
 
-void adjust_value_tab(int* value, char* title, uint16_t* current_screen);
+void adjust_value_tab(int *value, char *title, uint16_t *current_screen);
 
-Configuration* get_driver_config(uint8_t driver_index);
+Configuration *get_driver_config(uint8_t driver_index);
 // tabs
 
 #endif
