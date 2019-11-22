@@ -23,6 +23,7 @@
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include <util/delay.h>
 
 /*============================================================================
@@ -339,13 +340,17 @@ void OLED_set_display_enhancement_B(OLED_ENHANCEMENT_B enhancement) {
     OLED_write_data(0x20); // ???? from the tech specs lol
 }
 
-void OLED_set_command_lock(uint8_t lock) {
+void OLED_set_command_lock(OLED_COMMAND_LOCK lock) {
     uint8_t flags = 0b00010010 | (lock << 2);
 
     OLED_write_instruction(OLED_CMD_COMMAND_LOCK);
     OLED_write_data(flags);
 }
 
+/**
+ * Fills the contents of the ram with the specified byte,
+ * if you want more precise control use Show_Pixel and Present_Buffer
+ */
 void OLED_fill_ram(uint8_t data) {
     OLED_set_column_address(0, OLED_COLUMNS - 1);
     OLED_set_row_address(0, OLED_ROWS - 1);
@@ -362,11 +367,10 @@ void OLED_fill_ram(uint8_t data) {
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 //  Wrapper Functions
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+/**
+ * Pushes all the updated content in the buffer to the OLED screen
+ */
 void Present_Buffer() {
-    //OLED_set_column_address(0, OLED_COLUMNS - 1);
-    //OLED_set_row_address(0, OLED_ROWS - 1);
-    //OLED_enable_write_RAM();
-
     for (uint8_t i = 0; i < OLED_ROWS; i++) {
         for (uint8_t j = 0; j < OLED_COLUMNS; j++) {
             int index = i * OLED_ROWS + j;
@@ -411,14 +415,23 @@ void Present_Buffer() {
     }
 }
 
+/**
+ * Empties the entire buffer, and clears the screen
+ */
 void Clear_Buffer() {
-    for (uint8_t i = 0; i < OLED_ROWS; i++) {
+    /*for (uint8_t i = 0; i < OLED_ROWS; i++) {
         for (uint8_t j = 0; j < OLED_COLUMNS; j++) {
             int index = i * OLED_ROWS + j;
             oledBuffer[index] = 0;
         }
-    }
+    }*/
 
+    // clear the buffer
+    memset(oledBuffer, 0, sizeof(uint8_t) * (OLED_ROWS * OLED_COLUMNS));
+    // mark each pixel as updated
+    memset(oledBufferUpdated, 0b11111111, sizeof(uint8_t) * (OLED_ROWS * OLED_COLUMNS / 8));
+
+    // clear the OLED screen
     OLED_fill_ram(0);
 }
 
@@ -462,7 +475,7 @@ void Show_Pixel(uint16_t x, uint16_t y, uint8_t value) {
     }
 }
 
-void Show_Font57(uint16_t x, uint16_t y, char value) {
+void Show_Char(uint16_t x, uint16_t y, char value) {
     if (value == ' ') {
         // set character to '96' (break space)
         value = 0x60;
@@ -473,8 +486,6 @@ void Show_Font57(uint16_t x, uint16_t y, char value) {
 
     // pointer to first element of binary ascii representation
     unsigned char *asciiSrcPointer = Ascii_2[(value - 1)];
-    //0001 0101
-    //OLED_set_remap_and_dual_com_line(1, 0, 1, 1, 0, 1);
 
     // loop through each bit
     for (uint8_t i = 0; i < CHAR_HEIGHT; i++) {
@@ -484,10 +495,6 @@ void Show_Font57(uint16_t x, uint16_t y, char value) {
             Show_Pixel(x + j, y + i, bit);
         }
     }
-}
-
-void Show_Char(uint16_t x, uint16_t y, char value) {
-    Show_Font57(x, y, value);
 }
 
 void Show_Char_Big(uint16_t x, uint16_t y, char value) {

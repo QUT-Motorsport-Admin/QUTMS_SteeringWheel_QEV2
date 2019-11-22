@@ -116,6 +116,7 @@ typedef enum OLED_COMMAND_LOCK {
 } OLED_COMMAND_LOCK;
 
 // Instruction Setting Methods
+// for now refer to docs
 void OLED_write_data(uint8_t data);
 void OLED_write_instruction(uint8_t instruction);
 
@@ -170,7 +171,6 @@ void OLED_fill_ram(uint8_t data);
 #define CHAR_HEIGHT_BIG (CHAR_HEIGHT * BIG_CHAR_MOD)
 #define CHAR_WIDTH_BIG (CHAR_WIDTH * BIG_CHAR_MOD)
 
-//uint8_t oledBufferPrevious[OLED_COLUMN_COUNT * OLED_ROWS];
 uint8_t oledBuffer[OLED_ROWS * OLED_COLUMNS];
 uint8_t oledBufferUpdated[OLED_ROWS * OLED_COLUMNS / 8];
 
@@ -179,6 +179,9 @@ uint8_t oledBufferUpdated[OLED_ROWS * OLED_COLUMNS / 8];
  */
 void Present_Buffer();
 
+/**
+ * Empties the entire buffer, and clears the screen
+ */
 void Clear_Buffer();
 
 /**
@@ -188,11 +191,11 @@ void Clear_Buffer();
  *	y: the vertical coordinate
  *	value: the bit to display (1 or 0)
  *
- * \return void
+ * @return void
  */
 void Show_Pixel(uint16_t x, uint16_t y, uint8_t value);
 
-void Show_Font57(uint16_t x, uint16_t y, char value);
+// i hope these are self explanatory if not see CAB202
 void Show_Char(uint16_t x, uint16_t y, char value);
 void Show_Char_Big(uint16_t x, uint16_t y, char value);
 void Show_String(uint16_t x, uint16_t y, char *value);
