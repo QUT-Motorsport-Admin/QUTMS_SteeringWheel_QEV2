@@ -23,16 +23,9 @@
 #include "settings.h"
 #include "spi.h"
 #include "static_menu.h"
+#include "MCP2517.h"
 
 #include <stdbool.h>
-
-// Vertical scroll
-#define UPWARD 0x00
-#define DOWNWARD 0x01
-
-// Fade scroll
-#define UPWARD_OUT 0x02
-#define DOWNWARD_OUT 0x03
 
 /*============================================================================
 Function:   splash_screen()
@@ -65,14 +58,19 @@ void steering_wheel_init() {
     //DDRD = 0b00000000;
     DDRD |= 0b11001000; // LEDs as outputs, DC
     /* Set MOSI and SCK output, all others input */
-    DDRB |= 0b10100011; // CS/SS, reset
+    DDRB |= 0b10101011; // CS/SS, reset, CAN_CS output
+	
+	CAN_CS_PORT |= (1 << CAN_CS); // CS high to turn off
 
     configure_input();
     // TXD/MOSI_A, OLED_CS
     SPI_CLOCK_HIGH;
     //uart0_init(9600);
     adc_init();
-    spi_init();
+    spi_init(0,0);
+	
+	// Init CAN
+	MCP2517_init();
 
     // initialize screen
     OLED_init();

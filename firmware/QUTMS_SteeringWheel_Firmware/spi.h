@@ -1,5 +1,5 @@
 /*****************************************************************************
-* @file    firmware/QUTMS_SteeringWheel_Firmware/spi.h
+* @file    firmware/QUTMS_HVBoard_Firmware/spi.h
 * @author  Zoe Goodward
 * @version V1.0.0
 * @date    2/08/2019 1:27:31 PM
@@ -147,10 +147,11 @@
  #error SPI: Clock rate (SPR0 & SPR1) in SPCR not set
 #endif
 
-
-
-
-void spi_init(void);
+// Functions
+void spi_init(uint8_t clkRate0, uint8_t clkRate1);
+//void spi_init(void);
 uint8_t spi_send_byte(uint8_t data);
+void spi_transfer_buffer(uint8_t *buf, uint8_t count);
+uint16_t spi_transfer_16(uint16_t data);
 
 #endif /* SPI_H_ */

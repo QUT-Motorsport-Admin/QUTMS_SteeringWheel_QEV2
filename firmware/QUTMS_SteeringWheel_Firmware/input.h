@@ -21,42 +21,43 @@
 #define BIT_VALUE(reg, pin) ((reg>>pin) & 1)
 
 /* SPI */
-#define SPI_MOSI PINB5
-#define SPI_MISO PINB6
-#define SPI_SCK PINB7
+#define SPI_MOSI	PINB5
+#define SPI_MISO	PINB6
+#define SPI_SCK		PINB7
 
 /* OLED */
-#define OLED_RESET PINB0
-#define OLED_CS PINB1
-#define OLED_DC PIND3
+#define OLED_RESET	PINB0
+#define OLED_CS		PINB1
+#define OLED_DC		PIND3
 
 /* CAN */
-#define CAN_CS PINB3
-#define CAN_INT PINB4
+#define CAN_CS_PORT	PORTB
+#define CAN_CS		PINB3
+#define CAN_INT		PINB4
 
 /* SD_CARD */
-#define SD_CS PINB2
+#define SD_CS		PINB2
 
 /* LEDS */
-#define LED_A PIND6
-#define LED_B PIND7
+#define LED_A		PIND6
+#define LED_B		PIND7
 
 /* Buttons */
-#define BTN_A PINA5
-#define BTN_B PINA6
-#define BTN_C PINA7
+#define BTN_A		PINA5
+#define BTN_B		PINA6
+#define BTN_C		PINA7
 
-#define POT_A PINA0
-#define POT_B PINA1
+#define POT_A		PINA0
+#define POT_B		PINA1
 
-#define LED_A_ON PORTD |= 0b01000000
-#define LED_A_OFF PORTD &= ~0b01000000
-#define LED_B_ON PORTD |= 0b10000000
-#define LED_B_OFF PORTD &= ~0b10000000
+#define LED_A_ON	PORTD |= 0b01000000
+#define LED_A_OFF	PORTD &= ~0b01000000
+#define LED_B_ON	PORTD |= 0b10000000
+#define LED_B_OFF	PORTD &= ~0b10000000
 
 /* Rotary Encoder */
-#define ROT_ENC_A PINA6//!((PINA >> PINA6) & 1 == 1)
-#define ROT_ENC_B PINA7//!((PINA >> PINA6) & 1 == 1)
+#define ROT_ENC_A	PINA6//!((PINA >> PINA6) & 1 == 1)
+#define ROT_ENC_B	PINA7//!((PINA >> PINA6) & 1 == 1)
 
 typedef struct input_state {
     bool left_button;
