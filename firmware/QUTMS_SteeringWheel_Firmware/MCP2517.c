@@ -303,7 +303,7 @@ uint8_t MCP2517_transmitFifoStatus(MCP2517_FIFO_CHANNEL channel, MCP2517_TX_FIFO
 // *****************************************************************************
 // MCP2517 Receive Functions
 // *****************************************************************************
-void MCP2517_recieveMessage(uint32_t *receiveID, uint8_t *numDataBytes, uint8_t *data) {
+void MCP2517_recieveMessage(CAN_RECEIVE_ADDRESS *receiveID, uint8_t *numDataBytes, uint8_t *data) {
 	MCP2517_RX_MSG_OBJ rxObj;
 	MCP2517_RX_FIFO_STATUS rxFlags;
 	
@@ -319,7 +319,7 @@ void MCP2517_recieveMessage(uint32_t *receiveID, uint8_t *numDataBytes, uint8_t 
 	}
 }
 
-void MCP2517_readMsgReceive(uint32_t *receiveID, uint8_t *numDataBytes, uint8_t *data, MCP2517_RX_MSG_OBJ *rxObj) {
+void MCP2517_readMsgReceive(CAN_RECEIVE_ADDRESS *receiveID, uint8_t *numDataBytes, uint8_t *data, MCP2517_RX_MSG_OBJ *rxObj) {
 	
 	uint8_t buff[MCP2517_MAX_MSG_SIZE] = {0}; // Max size of transmit message
 	
@@ -367,7 +367,7 @@ void MCP2517_readMsgReceive(uint32_t *receiveID, uint8_t *numDataBytes, uint8_t 
 // *****************************************************************************
 // MCP2517 Transmit Functions
 // *****************************************************************************
-uint8_t MCP2517_transmitMessage(uint32_t canMessageID, uint8_t numDataBytes, uint8_t *messageData) {
+uint8_t MCP2517_transmitMessage(CAN_SEND_ADDRESS canMessageID, uint8_t numDataBytes, uint8_t *messageData) {
 	
 	// Check if numDataBytes > 8
 	if (numDataBytes > 8) {

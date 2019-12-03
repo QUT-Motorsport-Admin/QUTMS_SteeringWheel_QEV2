@@ -64,14 +64,14 @@ void steering_wheel_init() {
 
     configure_input();
     // TXD/MOSI_A, OLED_CS
-    SPI_CLOCK_HIGH;
+    
     //uart0_init(9600);
     adc_init();
     spi_init(0,0);
 	
 	// Init CAN
 	MCP2517_init();
-
+    SPI_CLOCK_HIGH;
     // initialize screen
     OLED_init();
     // use inverse mode for better visibility
@@ -91,8 +91,6 @@ uint8_t n = 123;
 uint8_t buffer[8];
 
 unsigned char TempBuffer[10];
-
-//uint32_t data = 0;
 
 int main(void) {
     //_delay_ms(1000);
